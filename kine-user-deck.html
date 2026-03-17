@@ -1,0 +1,1618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kinē — £30/month for the programme nobody else will write you</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0E0C0E;
+    --surface: #161216;
+    --surface2: #1e1a1e;
+    --border: #2a2228;
+    --accent: #C49098;
+    --accent-dim: rgba(196, 144, 152, 0.10);
+    --accent-glow: rgba(196, 144, 152, 0.20);
+    --text: #e8e0e2;
+    --muted: #6a5a60;
+    --muted2: #9a8a90;
+    --radius: 10px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html {
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent) var(--bg);
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 1.2rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    backdrop-filter: blur(20px);
+    background: rgba(14, 12, 14, 0.7);
+    border-bottom: 1px solid var(--border);
+    transition: all 0.4s ease;
+  }
+
+  nav.scrolled {
+    padding: 0.8rem 3rem;
+    background: rgba(14, 12, 14, 0.92);
+  }
+
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    color: var(--text);
+    letter-spacing: 4px;
+  }
+
+  .nav-logo span { color: var(--accent); }
+
+  .nav-dots {
+    display: flex;
+    gap: 0.6rem;
+  }
+
+  .nav-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--border);
+    border: 1px solid var(--muted);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .nav-dot.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    box-shadow: 0 0 8px var(--accent-glow);
+  }
+
+  /* ─── SECTIONS ─── */
+  section {
+    min-height: 100vh;
+    padding: 8rem 3rem 5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .section-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 100%;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .section-inner.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .section-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 28px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4rem, 10vw, 8rem);
+    line-height: 0.95;
+    letter-spacing: 6px;
+    margin-bottom: 1.5rem;
+  }
+
+  h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.4rem, 5vw, 3.8rem);
+    line-height: 1.05;
+    letter-spacing: 2px;
+    margin-bottom: 1.5rem;
+  }
+
+  h3 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--muted2);
+    max-width: 680px;
+    font-weight: 300;
+  }
+
+  .highlight { color: var(--accent); font-weight: 500; }
+
+  .section-divider {
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    margin-bottom: 2rem;
+  }
+
+  /* ─── HERO ─── */
+  #hero {
+    text-align: center;
+    align-items: center;
+  }
+
+  #hero .section-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(5rem, 12vw, 9rem);
+    letter-spacing: 12px;
+    line-height: 1;
+    color: var(--text);
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-logo .logo-accent { color: var(--accent); }
+
+  .hero-sub {
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(1.1rem, 2.2vw, 1.5rem);
+    color: var(--muted2);
+    margin-bottom: 2.5rem;
+    font-weight: 300;
+    letter-spacing: 0.02em;
+  }
+
+  .hero-tagline {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0.7rem 1.8rem;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    background: var(--surface);
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(196, 144, 152, 0.06) 0%, transparent 60%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    animation: pulse 6s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.4; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 0.7; transform: translate(-50%, -50%) scale(1.15); }
+  }
+
+  /* ─── PAIN POINTS ─── */
+  .pain-point {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.2rem;
+    padding: 1.2rem 0;
+  }
+
+  .pain-dot {
+    width: 10px;
+    height: 10px;
+    min-width: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    margin-top: 0.55rem;
+  }
+
+  .pain-point p {
+    font-size: 1.15rem;
+    max-width: none;
+  }
+
+  .stat-bar {
+    margin-top: 3rem;
+    padding: 2rem 2.5rem;
+    background: var(--surface);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+
+  .stat-bar p {
+    font-size: 1rem;
+    font-style: italic;
+    max-width: none;
+    flex: 1;
+  }
+
+  .stat-bar-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3.5rem;
+    color: var(--accent);
+    line-height: 1;
+    min-width: 100px;
+    text-align: right;
+  }
+
+  /* ─── OUTCOME BARS ─── */
+  .outcome {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 1.2rem 0;
+  }
+
+  .outcome-bar {
+    width: 4px;
+    min-width: 4px;
+    height: 50px;
+    background: var(--accent);
+    border-radius: 2px;
+    margin-top: 0.2rem;
+  }
+
+  .outcome p {
+    font-size: 1.15rem;
+    color: var(--text);
+    max-width: none;
+  }
+
+  .bottom-muted {
+    margin-top: 2.5rem;
+    font-style: italic;
+    color: var(--muted);
+    font-size: 1rem;
+  }
+
+  /* ─── STEP CARDS ─── */
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+  }
+
+  .step-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 16px;
+    padding: 2.5rem 2rem;
+    transition: all 0.3s ease;
+  }
+
+  .step-card:hover {
+    border-color: rgba(196, 144, 152, 0.3);
+    border-left-color: var(--accent);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+  }
+
+  .step-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.8rem;
+    color: rgba(196, 144, 152, 0.2);
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+
+  .step-card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .step-card p {
+    font-size: 0.95rem;
+    color: var(--muted2);
+  }
+
+  /* ─── FEATURE GRID ─── */
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+  }
+
+  .feature-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .feature-card:hover {
+    border-color: rgba(196, 144, 152, 0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+  }
+
+  .feature-accent {
+    width: 32px;
+    height: 3px;
+    background: var(--accent);
+    border-radius: 2px;
+    margin-bottom: 1.2rem;
+  }
+
+  .feature-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .feature-card p {
+    font-size: 0.95rem;
+    color: var(--muted);
+  }
+
+  /* ─── FEATURE ROWS (What You Get) ─── */
+  .feature-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 1.5rem;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  .feature-row.reverse {
+    grid-template-columns: 1fr 200px;
+  }
+
+  .feature-row.reverse .phone-frame { order: 2; }
+  .feature-row.reverse .feature-row-copy { order: 1; }
+
+  .feature-row .phone-frame {
+    padding: 10px;
+    border-radius: 20px;
+  }
+
+  .feature-row .phone-frame::before {
+    width: 50px;
+    height: 3px;
+    margin-bottom: 8px;
+  }
+
+  .feature-row-copy h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.3rem;
+    color: var(--text);
+  }
+
+  .feature-row-copy p {
+    font-size: 0.85rem;
+    color: var(--muted2);
+    line-height: 1.5;
+    margin-bottom: 0.5rem;
+  }
+
+  .feature-callout {
+    border-left: 2px solid var(--accent);
+    padding-left: 0.8rem;
+    font-size: 0.8rem;
+    color: var(--muted2);
+    font-style: italic;
+    line-height: 1.4;
+  }
+
+  .feature-callout strong { color: var(--accent); font-style: normal; }
+
+  .feature-row-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--muted);
+    margin-bottom: 0.3rem;
+  }
+
+  .phone-duo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .phone-duo .phone-frame {
+    padding: 8px;
+    border-radius: 16px;
+  }
+
+  .phone-duo .phone-frame::before {
+    width: 40px;
+    height: 2px;
+    margin-bottom: 6px;
+  }
+
+  /* ─── PRICING ─── */
+  .price-card-main {
+    max-width: 480px;
+    margin: 2.5rem auto 0;
+    background: var(--surface);
+    border: 1px solid var(--accent);
+    border-radius: 20px;
+    padding: 3rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .price-card-main::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(165deg, var(--surface) 0%, rgba(196,144,152,0.06) 100%);
+    pointer-events: none;
+  }
+
+  .price-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 4rem;
+    color: var(--text);
+    line-height: 1.1;
+    position: relative;
+  }
+
+  .price-value span {
+    font-size: 1.2rem;
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  .price-features {
+    font-size: 0.95rem;
+    color: var(--muted2);
+    margin-top: 1.2rem;
+    position: relative;
+  }
+
+  .price-guarantee {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-top: 1.5rem;
+    position: relative;
+  }
+
+  .price-compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 3rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .compare-item {
+    text-align: center;
+    padding: 1.5rem;
+    background: var(--surface);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+  }
+
+  .compare-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    color: var(--accent);
+    line-height: 1.2;
+  }
+
+  .compare-label {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-top: 0.4rem;
+  }
+
+  /* ─── CTA ─── */
+  #cta {
+    text-align: center;
+    align-items: center;
+  }
+
+  #cta .section-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .cta-line {
+    width: 80px;
+    height: 2px;
+    background: var(--accent);
+    margin: 2rem 0;
+  }
+
+  .cta-link {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.2rem;
+    color: var(--text);
+    text-decoration: none;
+    padding: 0.9rem 2.5rem;
+    border: 1px solid var(--accent);
+    border-radius: 100px;
+    transition: all 0.3s ease;
+    display: inline-block;
+    letter-spacing: 0.02em;
+  }
+
+  .cta-link:hover {
+    background: var(--accent);
+    color: var(--bg);
+  }
+
+  .cta-footer {
+    margin-top: 3rem;
+    font-size: 0.85rem;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  /* ─── CITATIONS ─── */
+  .section-sources {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .section-sources p {
+    font-size: 0.7rem;
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: none;
+    font-style: italic;
+  }
+
+  /* ─── PHONE MOCKUPS ─── */
+  .journey-step {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 3rem;
+    align-items: center;
+    margin-bottom: 4rem;
+  }
+
+  .journey-step.reverse {
+    grid-template-columns: 1fr 320px;
+  }
+
+  .journey-step.reverse .phone-frame { order: 2; }
+  .journey-step.reverse .journey-copy { order: 1; }
+
+  .phone-frame {
+    background: #111111;
+    border-radius: 28px;
+    border: 2px solid #252525;
+    padding: 16px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .phone-frame::before {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 4px;
+    background: #252525;
+    border-radius: 4px;
+    margin: 0 auto 12px;
+  }
+
+  .phone-screen {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    line-height: 1.4;
+    color: #f0f0f0;
+  }
+
+  .phone-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: #c49098;
+    margin-bottom: 6px;
+  }
+
+  .phone-heading {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: #f0f0f0;
+    margin-bottom: 8px;
+    line-height: 1.25;
+  }
+
+  .phone-heading em { color: #c49098; font-style: normal; font-weight: 500; }
+
+  .phone-muted { color: #888; font-weight: 300; font-size: 10px; }
+
+  .phone-card {
+    background: #191919;
+    border: 1px solid #252525;
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-bottom: 6px;
+  }
+
+  .phone-card-accent {
+    border-color: rgba(196,144,152,0.4);
+  }
+
+  .phone-tag {
+    display: inline-block;
+    font-size: 8px;
+    padding: 2px 6px;
+    border-radius: 999px;
+    border: 1px solid rgba(196,144,152,0.3);
+    color: #c49098;
+    margin-right: 3px;
+  }
+
+  .phone-tag-muted {
+    border-color: #252525;
+    color: #5a5a5a;
+  }
+
+  .phone-btn {
+    display: inline-block;
+    background: #191919;
+    border: 1px solid #252525;
+    border-radius: 8px;
+    padding: 7px 14px;
+    font-size: 10px;
+    color: #f0f0f0;
+    text-align: center;
+  }
+
+  .phone-btn-accent {
+    border-color: #c49098;
+    color: #c49098;
+  }
+
+  .phone-input {
+    background: #212121;
+    border: 1px solid #252525;
+    border-radius: 6px;
+    padding: 6px 8px;
+    font-size: 11px;
+    color: #888;
+    display: inline-block;
+    width: 55px;
+    text-align: center;
+  }
+
+  .phone-pr {
+    background: rgba(196,144,152,0.08);
+    border: 1px solid rgba(196,144,152,0.25);
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+  }
+
+  .phone-divider {
+    height: 1px;
+    background: #252525;
+    margin: 8px 0;
+  }
+
+  .journey-copy h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    letter-spacing: 1px;
+    color: var(--text);
+    margin-bottom: 0.6rem;
+  }
+
+  .journey-copy p {
+    font-size: 1rem;
+    max-width: none;
+  }
+
+  .journey-callout {
+    margin-top: 1rem;
+    padding: 1rem 1.2rem;
+    background: var(--surface);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 10px 10px 0;
+    font-size: 0.9rem;
+    color: var(--muted2);
+    line-height: 1.5;
+  }
+
+  .journey-callout strong { color: var(--accent); }
+
+  @media (max-width: 900px) {
+    .journey-step, .journey-step.reverse {
+      grid-template-columns: 1fr;
+    }
+    .journey-step.reverse .phone-frame { order: 0; }
+    .journey-step.reverse .journey-copy { order: 0; }
+    .phone-frame { max-width: 320px; margin: 0 auto; }
+    .feature-row, .feature-row.reverse {
+      grid-template-columns: 1fr;
+    }
+    .feature-row.reverse .phone-frame { order: 0; }
+    .feature-row.reverse .feature-row-copy { order: 0; }
+    .feature-row .phone-frame { max-width: 220px; margin: 0 auto; }
+    .phone-duo { max-width: 280px; margin: 0 auto; }
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 768px) {
+    section { padding: 6rem 1.5rem 4rem; }
+    nav { padding: 1rem 1.5rem; }
+    .nav-dots { display: none; }
+    .steps-grid { grid-template-columns: 1fr !important; }
+    .feature-grid { grid-template-columns: 1fr; }
+    .price-compare { grid-template-columns: 1fr; }
+    .stat-bar { flex-direction: column; text-align: center; }
+    .stat-bar-number { text-align: center; min-width: auto; }
+  }
+
+  @media (max-width: 480px) {
+    .hero-logo { letter-spacing: 6px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-logo">KIN<span>Ē</span></div>
+  <div class="nav-dots">
+    <div class="nav-dot active" data-section="0" title="Title"></div>
+    <div class="nav-dot" data-section="1" title="Problem"></div>
+    <div class="nav-dot" data-section="2" title="Problem (short)"></div>
+    <div class="nav-dot" data-section="3" title="What Kinē Is"></div>
+    <div class="nav-dot" data-section="4" title="Your First Session"></div>
+    <div class="nav-dot" data-section="5" title="It Grows With You"></div>
+    <div class="nav-dot" data-section="6" title="Features"></div>
+    <div class="nav-dot" data-section="7" title="Pricing"></div>
+    <div class="nav-dot" data-section="8" title="Join"></div>
+  </div>
+</nav>
+
+<!-- 1. HERO -->
+<section id="hero">
+  <div class="hero-glow"></div>
+  <div class="section-inner">
+    <h1 class="hero-logo">KIN<span class="logo-accent">Ē</span></h1>
+    <p class="hero-sub">The gym was never the hard part.<br>It was everything nobody told you when you got there.</p>
+    <div class="hero-tagline">An intelligent training programme for women like you — it explains itself, then gets out of your way</div>
+  </div>
+</section>
+
+<!-- 2. THE PROBLEM -->
+<section>
+  <div class="section-inner">
+    <div class="section-label">01 — Sound Familiar?</div>
+    <h2>You show up every week.<br>So why does nobody build <span class="highlight">for you?</span></h2>
+    <div class="section-divider"></div>
+
+    <div class="pain-point">
+      <div class="pain-dot"></div>
+      <p>Follow a programme written for men and it's built around goals that aren't yours. Follow the beginner-friendly stuff and you outgrow it in weeks. Look into powerlifting and it's great — but it's more than most people are looking for. <span class="highlight">There's no middle ground</span> — hardly any intelligent training built around how women actually want to look, feel and progress. <span class="highlight">67% of women say the gym feels intimidating</span> — not because of the weights, but because nobody showed them what to do with them.</p>
+    </div>
+    <div class="pain-point">
+      <div class="pain-dot"></div>
+      <p>The "smart" apps weren't built for you either. A dull screen of numbers you're not sure why you're recording. No sense of what to focus on, whether you're progressing, or what progress should even look like. Then life happens, you miss a week, and it feels like starting over — again. <span class="highlight">Women are 60% of fitness app users but stay 20% fewer days than men.</span> The number one thing women want from a fitness app is to be taught — and almost none of them do it.</p>
+    </div>
+    <div class="pain-point">
+      <div class="pain-dot"></div>
+      <p>I spent ten years learning this the hard way. Programmes that weren't designed with me in mind — weighted crunches that gave me a wider waist I never asked for. A slipped disc because nobody told me the muscles I couldn't see mattered just as much as the ones I could. But I was getting smarter.</p>
+    </div>
+    <div class="pain-point">
+      <div class="pain-dot"></div>
+      <p>I ended up in powerlifting — and for the first time, training made sense. Real structure. Real education. Someone had thought about <em>why</em>. But I realised what I really wanted was the structure — and I hadn't found that anywhere else. You shouldn't need to commit to a sport just to train with intention, understand what you're doing, and see consistent progress. That's what Kinē was built for.</p>
+    </div>
+
+    <div class="stat-bar">
+      <p>of fitness app users leave within the first 90 days. Not from laziness — from apps that don't meet them where they are.</p>
+      <div class="stat-bar-number">69%</div>
+    </div>
+
+    <div class="section-sources">
+      <p>Sources: PureGym/YouGov UK Fitness Report 2022 · Xu et al., PLOS ONE 2024 · JMIR mHealth 2026 · Tong et al., JMIR 2024</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- 2B. THE PROBLEM — SHORT VERSION (swap with section above) -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="problem-short" style="background: #12101a; border-left: 4px solid var(--accent);">
+  <div class="section-inner">
+    <div class="section-label" style="color: #8a9ae0;">SHORTER ALTERNATIVE — 01 — Sound Familiar?</div>
+    <h2>You show up every week.<br>So why does nobody build <span class="highlight">for you?</span></h2>
+    <div class="section-divider"></div>
+
+    <div class="pain-point">
+      <div class="pain-dot"></div>
+      <p>The options don't fit. Programmes built for men, beginner content you outgrow in weeks, or a sport that's more than most people are looking for. <span class="highlight">Hardly any intelligent training built around how women actually want to look, feel and progress.</span></p>
+    </div>
+    <div class="pain-point">
+      <div class="pain-dot"></div>
+      <p>The "smart" apps weren't the answer either — numbers without explanation, no sense of progress, and the moment life gets in the way, it feels like starting over. <span class="highlight">Women are 60% of fitness app users but stay 20% fewer days than men.</span> The number one thing they want is to be taught — and almost none of them do it.</p>
+    </div>
+    <div class="pain-point">
+      <div class="pain-dot"></div>
+      <p>I built Kinē because I lived it. The injuries from programmes that weren't designed with me in mind. The apps I stopped opening. It took powerlifting to show me what real structure felt like — and I realised that shouldn't require committing to a sport. <span class="highlight">That's what Kinē was built for.</span></p>
+    </div>
+
+    <div class="stat-bar">
+      <p>of fitness app users leave within the first 90 days. Not from laziness — from apps that don't meet them where they are.</p>
+      <div class="stat-bar-number">69%</div>
+    </div>
+
+    <div class="section-sources">
+      <p>Sources: PureGym/YouGov UK Fitness Report 2022 · Xu et al., PLOS ONE 2024 · JMIR mHealth 2026 · Tong et al., JMIR 2024</p>
+    </div>
+  </div>
+</section>
+
+<!-- 3. THE PRINCIPLE — revelation, not correction -->
+<section>
+  <div class="section-inner">
+    <div class="section-label">02 — What Kinē Actually Is</div>
+    <h2>A programme built around you —<br>that <span class="highlight">teaches you</span> as you follow it.</h2>
+    <div class="section-divider"></div>
+    <p>Most apps hand you a workout. Kinē builds yours — around your experience, your goals, and your body. Then it explains every decision it made. Every session comes with context — not a textbook, just the right explanation at the right moment. After a few weeks, you stop Googling. After a few months, you don't need the explanation at all.</p>
+
+    <div class="outcome">
+      <div class="outcome-bar"></div>
+      <p><strong>"Squats lead your session because they're the most demanding movement — everything after is built around the fatigue they create."</strong><br><em>You didn't read that in an article. It appeared before your first set.</em></p>
+    </div>
+    <div class="outcome">
+      <div class="outcome-bar"></div>
+      <p><strong>"This is week 4. Your body catches up to the work you've been putting in. That's what a deload is — and it's why you'll come back stronger next week."</strong><br><em>You learned what a deload is by doing one.</em></p>
+    </div>
+    <div class="outcome">
+      <div class="outcome-bar"></div>
+      <p><strong>"Your weight hasn't moved in two weeks. That's consolidation — the jump comes after the plateau, not instead of it."</strong><br><em>The moment most apps go silent, Kinē explains what's actually happening.</em></p>
+    </div>
+
+    <div class="stat-bar">
+      <p>higher retention in apps that educate, not just track. Understanding is what keeps people training.</p>
+      <div class="stat-bar-number">50%</div>
+    </div>
+
+    <div class="section-sources">
+      <p>Sources: Feed.fm Digital Fitness Ecosystem Report 2026</p>
+    </div>
+  </div>
+</section>
+
+<!-- 4. YOUR JOURNEY — interactive user flow with mockups -->
+<section style="min-height:auto; padding-bottom:2rem;">
+  <div class="section-inner">
+    <div class="section-label">03 — Your Journey</div>
+    <h2>What actually happens<br>when you <span class="highlight">open the app.</span></h2>
+    <div class="section-divider"></div>
+    <p style="margin-bottom:3rem;">No tutorial. No 20-screen setup. A few questions — and your programme is ready.</p>
+
+    <!-- STEP 1: ONBOARDING -->
+    <div class="journey-step">
+      <div class="phone-frame">
+        <div class="phone-screen">
+          <div class="phone-label">STEP 1 OF 4</div>
+          <div class="phone-heading">What matters most to you <em>right now?</em></div>
+          <div class="phone-muted" style="margin-bottom:10px;">No wrong answer — this shapes the emphasis of your programme.</div>
+
+          <div class="phone-card phone-card-accent" style="display:flex;gap:10px;align-items:center;">
+            <div style="font-size:18px;">&#9883;</div>
+            <div>
+              <div style="font-size:12px;font-weight:500;">I want to change how I look</div>
+              <div class="phone-muted">Strength, shape, how you carry yourself.</div>
+            </div>
+          </div>
+          <div class="phone-card" style="display:flex;gap:10px;align-items:center;">
+            <div style="font-size:18px;">&#9878;</div>
+            <div>
+              <div style="font-size:12px;font-weight:500;">I want to get strong</div>
+              <div class="phone-muted">The bar gets heavier. That's the measure.</div>
+            </div>
+          </div>
+          <div class="phone-card" style="display:flex;gap:10px;align-items:center;">
+            <div style="font-size:18px;">&#8635;</div>
+            <div>
+              <div style="font-size:12px;font-weight:500;">I want to build a routine that sticks</div>
+              <div class="phone-muted">Consistency over intensity.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="journey-copy">
+        <h3>About you</h3>
+        <p>Your goal. Your experience. Your life. Every answer shapes the programme you get.</p>
+        <div class="journey-callout">
+          <strong>Cycle-aware from day one.</strong> Optional period tracking built in. Another layer of context — not a rulebook.
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 2: WEEK VIEW -->
+    <div class="journey-step reverse">
+      <div class="journey-copy">
+        <h3>Your week, built for you</h3>
+        <p>Not a template. A periodised training week — generated around your goal, schedule, and equipment. Every session has a focus and a reason — explained before you start.</p>
+        <div class="journey-callout">
+          <strong>The session brief.</strong> One sentence before every session — why this workout, today.
+        </div>
+      </div>
+      <div class="phone-frame">
+        <div class="phone-screen">
+          <div class="phone-label">WEEK 1</div>
+          <div class="phone-heading">Hello, Sarah.</div>
+          <div class="phone-muted" style="margin-bottom:10px;">Every session built around you. Tap a day to start.</div>
+
+          <div class="phone-card phone-card-accent">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div>
+                <span style="font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:1px;color:#c49098;">MON</span>
+                <span style="font-size:11px;font-weight:500;margin-left:6px;">Lower Body — Glute Focus</span>
+              </div>
+              <span class="phone-muted">50 min</span>
+            </div>
+          </div>
+          <div class="phone-card" style="opacity:0.5;">
+            <span style="font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:1px;color:#5a5a5a;">TUE</span>
+            <span style="font-size:11px;color:#5a5a5a;margin-left:6px;">Recovery</span>
+          </div>
+          <div class="phone-card">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div>
+                <span style="font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:1px;color:#c49098;">WED</span>
+                <span style="font-size:11px;font-weight:500;margin-left:6px;">Upper Body — Push &amp; Pull</span>
+              </div>
+              <span class="phone-muted">55 min</span>
+            </div>
+          </div>
+          <div class="phone-card" style="opacity:0.5;">
+            <span style="font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:1px;color:#5a5a5a;">THU</span>
+            <span style="font-size:11px;color:#5a5a5a;margin-left:6px;">Recovery</span>
+          </div>
+          <div class="phone-card">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div>
+                <span style="font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:1px;color:#c49098;">FRI</span>
+                <span style="font-size:11px;font-weight:500;margin-left:6px;">Full Body — Strength</span>
+              </div>
+              <span class="phone-muted">50 min</span>
+            </div>
+          </div>
+
+          <div class="phone-divider"></div>
+          <div class="phone-muted" style="font-style:italic;line-height:1.5;">
+            "Lower body leads the week — posterior chain is the priority. Upper body balances push and pull. Friday ties it together."
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 3: SESSION VIEW -->
+    <div class="journey-step">
+      <div class="phone-frame">
+        <div class="phone-screen">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <div class="phone-label" style="margin-bottom:0;">MON · 16 MAR · SESSION 1 OF 3</div>
+          </div>
+          <div style="font-size:13px;font-weight:500;margin-bottom:3px;">Lower Body — Glute Focus</div>
+          <div class="phone-muted" style="font-style:italic;margin-bottom:10px;">Compounds first. Glutes from multiple angles. Control the eccentric.</div>
+
+          <!-- Cycle banner -->
+          <div style="background:rgba(196,144,152,0.06);border:1px solid rgba(196,144,152,0.15);border-radius:8px;padding:6px 10px;margin-bottom:10px;font-size:9px;color:#c49098;">
+            Follicular phase — energy is rising. Good day to push intensity.
+          </div>
+
+          <!-- Exercise 1 -->
+          <div class="phone-card phone-card-accent">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+              <div style="font-size:12px;font-weight:500;">Back Squat</div>
+              <span style="font-size:9px;color:#c49098;border:1px solid rgba(196,144,152,0.3);border-radius:4px;padding:1px 5px;">?</span>
+            </div>
+            <div style="margin:4px 0;">
+              <span class="phone-tag">Quads</span>
+              <span class="phone-tag">Glutes</span>
+            </div>
+            <div class="phone-muted">4 × 5 · Hard but controlled</div>
+            <div class="phone-divider"></div>
+            <div class="phone-muted" style="font-style:italic;">Breathe in at the top, brace. Depth: hip crease below parallel.</div>
+            <div style="display:flex;gap:6px;align-items:center;margin-top:8px;">
+              <span class="phone-muted" style="font-size:9px;">SET 1</span>
+              <span class="phone-input">75</span>
+              <span class="phone-muted" style="font-size:9px;">kg</span>
+              <span class="phone-input" style="width:35px;">5</span>
+              <span class="phone-muted" style="font-size:9px;">reps</span>
+              <span class="phone-btn-accent" style="font-size:9px;padding:4px 8px;border:1px solid rgba(196,144,152,0.3);border-radius:6px;">✓</span>
+            </div>
+          </div>
+
+          <!-- Exercise 2 -->
+          <div class="phone-card">
+            <div style="font-size:12px;font-weight:500;">Romanian Deadlift</div>
+            <div style="margin:4px 0;">
+              <span class="phone-tag">Glutes</span>
+              <span class="phone-tag phone-tag-muted">Hamstrings</span>
+            </div>
+            <div class="phone-muted">3 × 10 · Moderate effort</div>
+          </div>
+        </div>
+      </div>
+      <div class="journey-copy">
+        <h3>Tap a day. Train.</h3>
+        <p>Your numbers are already there — just adjust and go. Exercise briefs on every movement — expandable, not forced. Muscle tags show exactly what you're targeting. Tap one to learn why that muscle matters for your goal.</p>
+        <div class="journey-callout">
+          <strong>Tap any muscle tag</strong> to see what it does, how to feel it, and every exercise that trains it.
+        </div>
+        <div class="journey-callout" style="margin-top:0.5rem;">
+          <strong>Cycle-aware session banners.</strong> A small cue at the top of your session — just enough context to train with your body, not against it.
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 4: POST-SESSION -->
+    <div class="journey-step reverse">
+      <div class="journey-copy">
+        <h3>Finish. See what you did.</h3>
+        <p>PRs celebrated. Milestones surfaced — things worth noticing that most apps ignore. Then a rotating insight — different every time. Every session ends with something worth noticing.</p>
+        <div class="journey-callout">
+          <strong>Variable insights.</strong> Volume moved. Best set. Session comparisons. Different every time — so you actually look.
+        </div>
+      </div>
+      <div class="phone-frame">
+        <div class="phone-screen" style="text-align:center;">
+          <div style="font-size:42px;margin:8px 0 6px;color:#c49098;">&#10003;</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;margin-bottom:2px;">Week complete.</div>
+          <div class="phone-muted" style="margin-bottom:14px;">3 of 3 sessions logged this week.</div>
+
+          <!-- PR -->
+          <div class="phone-pr" style="text-align:left;">
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:10px;letter-spacing:2px;color:#c49098;margin-bottom:4px;">NEW PERSONAL RECORD</div>
+            <div style="font-size:14px;font-weight:500;">Back Squat — 85kg</div>
+            <div class="phone-muted">up from 80kg</div>
+            <div style="margin-top:6px;">
+              <span class="phone-btn-accent" style="font-size:9px;padding:4px 10px;border:1px solid rgba(196,144,152,0.3);border-radius:6px;">Share this PR</span>
+            </div>
+          </div>
+
+          <!-- Milestone -->
+          <div class="phone-card" style="text-align:left;">
+            <div style="font-size:10px;color:#c49098;letter-spacing:1px;margin-bottom:2px;">CONSISTENCY STREAK</div>
+            <div style="font-size:11px;">4 consecutive weeks of completed training.</div>
+          </div>
+
+          <!-- Variable insight -->
+          <div class="phone-card" style="text-align:left;border-color:rgba(196,144,152,0.15);">
+            <div style="font-size:10px;color:#c49098;letter-spacing:1px;margin-bottom:2px;">THIS SESSION</div>
+            <div style="font-size:11px;">12% more volume than your last Lower Body session.</div>
+          </div>
+
+          <div style="margin-top:10px;">
+            <span class="phone-btn phone-btn-accent" style="width:100%;display:block;">Rate &amp; finish</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 5: POST-WEEK ANALYSIS -->
+    <div class="journey-step">
+      <div class="phone-frame">
+        <div class="phone-screen">
+          <div class="phone-label">WEEK 1 — COMPLETE</div>
+          <div class="phone-heading">Week summary</div>
+
+          <!-- Stats row -->
+          <div style="display:flex;gap:6px;margin-bottom:10px;">
+            <div class="phone-card" style="flex:1;text-align:center;padding:8px;">
+              <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:#c49098;">3/3</div>
+              <div class="phone-muted">sessions</div>
+            </div>
+            <div class="phone-card" style="flex:1;text-align:center;padding:8px;">
+              <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:#c49098;">4,820</div>
+              <div class="phone-muted">kg moved</div>
+            </div>
+            <div class="phone-card" style="flex:1;text-align:center;padding:8px;">
+              <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:#c49098;">1</div>
+              <div class="phone-muted">PR</div>
+            </div>
+          </div>
+
+          <!-- Top lifts -->
+          <div class="phone-card">
+            <div style="font-size:10px;color:#c49098;letter-spacing:1px;margin-bottom:6px;">TOP PROGRESSIONS</div>
+            <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px;">
+              <span>Back Squat</span>
+              <span style="color:#c49098;">80kg → 85kg</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px;">
+              <span>Romanian Deadlift</span>
+              <span style="color:#c49098;">60kg → 65kg</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:11px;">
+              <span>Hip Thrust</span>
+              <span style="color:#c49098;">70kg → 75kg</span>
+            </div>
+          </div>
+
+          <!-- Week analysis -->
+          <div class="phone-card" style="border-color:rgba(196,144,152,0.15);">
+            <div style="font-size:10px;color:#c49098;letter-spacing:1px;margin-bottom:4px;">WEEK ANALYSIS</div>
+            <div style="font-size:11px;line-height:1.5;color:#888;font-style:italic;">
+              "Strong first week. Squat moved well — adding 5kg next block should feel natural. Hamstring volume was high — watch soreness early next week."
+            </div>
+          </div>
+
+          <div style="margin-top:8px;">
+            <span class="phone-btn" style="width:100%;display:block;">Start Week 2 →</span>
+          </div>
+        </div>
+      </div>
+      <div class="journey-copy">
+        <h3>Your week, reviewed</h3>
+        <p>After your final session, the week closes with a full summary. Total volume. Top progressions. PRs. And a week analysis — plain English, written for your goal, explaining what happened and what comes next.</p>
+        <div class="journey-callout">
+          <strong>This is the weekly lens.</strong> Not just what you did — what it means. The analysis connects sessions to each other, spots patterns across sessions, and sets up the next week's focus.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- 5. THE PRINCIPLE — progressive autonomy -->
+<section>
+  <div class="section-inner">
+    <div class="section-label">04 — It Grows With You</div>
+    <h2>It starts by teaching you.<br>It stays by <span class="highlight">challenging you.</span></h2>
+    <div class="section-divider"></div>
+    <p>You get smarter. So does the programme. The education evolves — from explaining to pushing.</p>
+
+    <div class="steps-grid" style="grid-template-columns: repeat(4, 1fr);">
+      <div class="step-card">
+        <div class="step-number">01</div>
+        <h3>It meets you where you are</h3>
+        <p>Exercise briefs on every movement — expandable, not forced. If you know it, skip it. If you don't, it's right there. You'll learn things nobody told you, at whatever level you're starting from.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-number">02</div>
+        <h3>You start to anticipate</h3>
+        <p>You understand why your session is structured the way it is. You recognise patterns across blocks. The education shifts from foundational to nuanced.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-number">03</div>
+        <h3>You own it</h3>
+        <p>You're not just following — you're reading your own training. Kinē moves from explaining the basics to challenging your understanding.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-number">04</div>
+        <h3>Go deeper</h3>
+        <p>Exercise deep dives. Muscle group breakdowns. What to feel under load and why it matters. The education layer that would have overwhelmed you early on — now it's yours to explore.</p>
+      </div>
+    </div>
+
+    <div class="stat-bar">
+      <p>Self-efficacy — not motivation — is the strongest predictor of whether someone keeps training long-term. Kinē builds that.</p>
+      <div class="stat-bar-number" style="font-size:2rem;">Self-efficacy</div>
+    </div>
+
+    <div class="section-sources">
+      <p>Sources: Slovinec D'Angelo et al., Health Psychology 2014 · McAuley, Journal of Behavioral Medicine 1992</p>
+    </div>
+  </div>
+</section>
+
+<!-- 5. FEATURES — everything you get -->
+<section>
+  <div class="section-inner">
+    <div class="section-label">05 — What You Get</div>
+    <h2>Everything a coach gives you.<br><span class="highlight">Built into the programme.</span></h2>
+    <div class="section-divider"></div>
+
+    <!-- 1. PERIODISED PROGRAMMING -->
+    <div class="feature-row">
+      <div class="phone-frame">
+        <div class="phone-screen">
+          <div class="phone-label">WEEK 2 · BUILDING</div>
+          <div class="phone-card" style="display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <div style="font-size:9px;color:#c49098;font-weight:500;letter-spacing:1px;">MON</div>
+              <div style="font-size:10px;">Lower Body — Glute Focus</div>
+            </div>
+            <div style="font-size:7px;color:#6a9a7a;">●</div>
+          </div>
+          <div class="phone-card phone-card-accent" style="display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <div style="font-size:9px;color:#c49098;font-weight:500;letter-spacing:1px;">WED</div>
+              <div style="font-size:10px;">Upper Body — Push</div>
+            </div>
+            <div style="font-size:7px;color:#c49098;">TODAY</div>
+          </div>
+          <div class="phone-card">
+            <div style="font-size:9px;color:#c49098;font-weight:500;letter-spacing:1px;">FRI</div>
+            <div style="font-size:10px;">Lower Body — Posterior Chain</div>
+          </div>
+        </div>
+      </div>
+      <div class="feature-row-copy">
+        <div class="feature-row-num">01</div>
+        <h3>A new programme every block</h3>
+        <p>4-week blocks — each phase builds on the last, peaking before a recovery week. Regenerated from your progress. Not a template.</p>
+        <div class="feature-callout"><strong>Week 2.</strong> Load adjusts based on what you did last week. The programme is responding.</div>
+      </div>
+    </div>
+
+    <!-- 2. EDUCATION ON EVERY EXERCISE -->
+    <div class="feature-row reverse">
+      <div class="phone-frame">
+        <div class="phone-screen">
+          <div class="phone-label">EXERCISE 2 OF 5</div>
+          <div style="font-size:11px;font-weight:400;margin-bottom:4px;">Romanian Deadlift</div>
+          <div style="display:flex;gap:3px;margin-bottom:6px;">
+            <span class="phone-tag" style="border:1px solid rgba(196,144,152,0.4);color:#c49098;">hamstrings</span>
+            <span class="phone-tag" style="border:1px solid rgba(196,144,152,0.4);color:#c49098;">glutes</span>
+          </div>
+          <div class="phone-card" style="border-left:2px solid #c49098;padding:6px 8px;">
+            <div style="font-size:8px;color:#c49098;letter-spacing:1px;margin-bottom:2px;font-weight:500;">WHY THIS EXERCISE</div>
+            <div class="phone-muted" style="font-size:9px;line-height:1.4;color:#aaa;">Targets the entire posterior chain. Slow the lowering and feel the stretch through your hamstrings.</div>
+          </div>
+          <div class="phone-card" style="border-left:2px solid #6a9a7a;padding:6px 8px;">
+            <div style="font-size:8px;color:#6a9a7a;letter-spacing:1px;margin-bottom:2px;font-weight:500;">WHAT TO FEEL</div>
+            <div class="phone-muted" style="font-size:9px;line-height:1.4;color:#aaa;">Deep stretch down the back of your legs. Glutes fire hard at the top.</div>
+          </div>
+        </div>
+      </div>
+      <div class="feature-row-copy">
+        <div class="feature-row-num">02</div>
+        <h3>Education on every exercise</h3>
+        <p>Why it's in your session. How to do it. What to feel. Breathing cues on every compound lift. Every exercise comes with a full brief — unlocked as you progress.</p>
+        <div class="feature-callout"><strong>The understanding a coach gives</strong> — built into the programme itself.</div>
+      </div>
+    </div>
+
+    <!-- 3. EXERCISE SWAP -->
+    <div class="feature-row">
+      <div class="phone-frame">
+        <div class="phone-screen">
+          <div class="phone-label">SWAPPING</div>
+          <div style="font-size:11px;font-weight:500;margin-bottom:6px;">Romanian Deadlift</div>
+          <div class="phone-card phone-card-accent" style="display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <div style="font-size:10px;font-weight:500;">Stiff-Leg Deadlift</div>
+              <div class="phone-muted" style="font-size:8px;">Similar movement pattern</div>
+            </div>
+            <span style="font-size:8px;color:#6a9a7a;">●</span>
+          </div>
+          <div class="phone-card" style="display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <div style="font-size:10px;">Good Morning</div>
+              <div class="phone-muted" style="font-size:8px;">Different angle</div>
+            </div>
+          </div>
+          <div class="phone-card" style="display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <div style="font-size:10px;">Leg Curl</div>
+              <div class="phone-muted" style="font-size:8px;">Shifts focus</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="feature-row-copy">
+        <div class="feature-row-num">03</div>
+        <h3>Swap anything. Know the impact.</h3>
+        <p>Don't have the equipment? Not feeling it today? Swap any exercise — you'll see exactly what that means for your session before you commit.</p>
+        <div class="feature-callout"><strong>Your choice, always.</strong> Kinē doesn't block swaps — it just makes sure you're making an informed one.</div>
+      </div>
+    </div>
+
+    <!-- 4. CYCLE-AWARE ADJUSTMENTS -->
+    <div class="feature-row reverse">
+      <div class="phone-frame">
+        <div class="phone-screen">
+          <div class="phone-card" style="background:rgba(106,154,122,0.08);border:1px solid rgba(106,154,122,0.25);border-radius:8px;padding:8px;">
+            <div style="display:flex;align-items:center;gap:5px;margin-bottom:3px;">
+              <div style="width:6px;height:6px;border-radius:50%;background:#6a9a7a;"></div>
+              <div style="font-size:8px;color:#6a9a7a;letter-spacing:1.5px;font-weight:500;">FOLLICULAR PHASE</div>
+            </div>
+            <div style="font-size:10px;color:#ccc;margin-bottom:2px;">Energy and recovery tend to be higher here</div>
+            <div class="phone-muted" style="font-size:9px;line-height:1.4;color:#999;">A good window to push if it feels right.</div>
+          </div>
+          <div class="phone-card" style="margin-top:6px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div style="font-size:10px;">Back Squat</div>
+              <div class="phone-muted" style="font-size:9px;">4 × 5 · 60kg</div>
+            </div>
+            <div class="phone-muted" style="color:#6a9a7a;font-size:9px;margin-top:2px;">+2.5kg from last week ↑</div>
+          </div>
+        </div>
+      </div>
+      <div class="feature-row-copy">
+        <div class="feature-row-num">04</div>
+        <h3>Cycle-aware</h3>
+        <p>Optional tracking across four phases. Context that's there if you want it — never imposed. Over time, it learns your patterns — not a textbook's.</p>
+        <div class="feature-callout"><strong>Works with your body,</strong> not against it. Most apps don't even ask.</div>
+      </div>
+    </div>
+
+    <!-- 5. POST-SESSION ANALYSIS -->
+    <div class="feature-row">
+      <div class="phone-frame">
+        <div class="phone-screen">
+          <div class="phone-label">SESSION COMPLETE</div>
+          <div style="display:flex;gap:3px;margin-bottom:6px;">
+            <div class="phone-card" style="flex:1;text-align:center;padding:4px 2px;font-size:8px;">😴 Easy</div>
+            <div class="phone-card phone-card-accent" style="flex:1;text-align:center;padding:4px 2px;font-size:8px;">💪 Hard</div>
+            <div class="phone-card" style="flex:1;text-align:center;padding:4px 2px;font-size:8px;">🔥 Max</div>
+          </div>
+          <div class="phone-card" style="border-left:2px solid #c49098;padding:6px 8px;">
+            <div style="font-size:8px;color:#c49098;letter-spacing:1px;margin-bottom:2px;font-weight:500;">SESSION INSIGHT</div>
+            <div class="phone-muted" style="font-size:9px;line-height:1.4;color:#aaa;">4,200kg total volume — up 12% from your last lower session.</div>
+          </div>
+          <div class="phone-card" style="border-left:2px solid #6a9a7a;padding:6px 8px;">
+            <div style="font-size:8px;color:#6a9a7a;letter-spacing:1px;margin-bottom:2px;font-weight:500;">NEXT UP</div>
+            <div class="phone-muted" style="font-size:9px;line-height:1.4;color:#aaa;">Upper Body — Push on Wednesday.</div>
+          </div>
+        </div>
+      </div>
+      <div class="feature-row-copy">
+        <div class="feature-row-num">05</div>
+        <h3>Every session and every week gets reviewed</h3>
+        <p>Rate your session. Get something back — a different insight every time, and a full weekly summary when the week closes.</p>
+        <div class="feature-callout"><strong>The kind of feedback you'd get from a coach</strong> — built into the programme.</div>
+      </div>
+    </div>
+
+    <!-- 6. SMART WARMUPS -->
+    <div class="feature-row reverse">
+      <div class="phone-frame">
+        <div class="phone-screen">
+          <div class="phone-label">⏱ 10 MIN WARM-UP</div>
+          <div class="phone-card" style="padding:6px 8px;">
+            <div style="font-size:8px;color:#c49098;letter-spacing:1px;margin-bottom:2px;font-weight:500;">GENERAL PREP</div>
+            <div style="display:flex;justify-content:space-between;font-size:9px;"><div>Hip circles</div><div class="phone-muted">2 × 10</div></div>
+            <div style="display:flex;justify-content:space-between;font-size:9px;"><div>Glute bridge</div><div class="phone-muted">2 × 12</div></div>
+          </div>
+          <div class="phone-card" style="padding:6px 8px;">
+            <div style="font-size:8px;color:#6a9a7a;letter-spacing:1px;margin-bottom:2px;font-weight:500;">ACTIVATION</div>
+            <div style="display:flex;justify-content:space-between;font-size:9px;"><div>Goblet squat hold</div><div class="phone-muted">2 × 8</div></div>
+          </div>
+          <div class="phone-card" style="padding:6px 8px;">
+            <div style="font-size:8px;color:#888;letter-spacing:1px;margin-bottom:2px;font-weight:500;">RAMP-UP</div>
+            <div style="display:flex;justify-content:space-between;font-size:9px;"><div>Squat — bar only</div><div class="phone-muted">1 × 8</div></div>
+            <div style="display:flex;justify-content:space-between;font-size:9px;"><div>Squat — 40kg</div><div class="phone-muted">1 × 5</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="feature-row-copy">
+        <div class="feature-row-num">06</div>
+        <h3>Warmups built for your session</h3>
+        <p>Activation, mobility, ramp sets — matched to today's session and your experience.</p>
+        <div class="feature-callout"><strong>The warmup most people skip</strong> because nobody programmes it for them.</div>
+      </div>
+    </div>
+
+    <!-- 7. PROGRESS & CONTINUITY -->
+    <div class="feature-row">
+      <div class="phone-frame">
+        <div class="phone-screen">
+          <div style="text-align:center;padding:6px 0;">
+            <div style="font-size:8px;color:#c49098;letter-spacing:2px;margin-bottom:4px;font-weight:500;">NEW PERSONAL RECORD</div>
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:#f0f0f0;letter-spacing:2px;">BARBELL BACK SQUAT</div>
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:36px;color:#c49098;line-height:1;">67.5kg</div>
+            <div style="font-size:9px;color:#6a9a7a;margin-top:2px;">+2.5kg ↑</div>
+            <div class="phone-muted" style="margin-top:6px;">4 PRs this block · 12 sessions</div>
+            <div class="phone-card phone-card-accent" style="text-align:center;padding:5px;font-size:9px;color:#c49098;margin-top:6px;">Share ↗</div>
+          </div>
+        </div>
+      </div>
+      <div class="feature-row-copy">
+        <div class="feature-row-num">07</div>
+        <h3>Progress celebrated. Time away forgiven.</h3>
+        <p>PRs get a branded share card — one tap to your story. Miss a week? A welcome-back card shows everything you've built. Eased back in gradually. No guilt. No streak reset.</p>
+        <div class="feature-callout"><strong>Progress measured by capability,</strong> not compliance. Time away doesn't erase what you've done.</div>
+      </div>
+    </div>
+
+    <!-- 8. GOAL-AWARE VOICE -->
+    <div class="feature-row reverse">
+      <div class="phone-duo">
+        <div class="phone-frame">
+          <div class="phone-screen">
+            <div class="phone-label" style="font-size:7px;">STRENGTH</div>
+            <div style="font-size:9px;color:#f0f0f0;margin-bottom:4px;">Back Squat</div>
+            <div class="phone-muted" style="font-size:8px;line-height:1.4;color:#aaa;">5kg above last week. Last two reps should be a fight.</div>
+          </div>
+        </div>
+        <div class="phone-frame">
+          <div class="phone-screen">
+            <div class="phone-label" style="font-size:7px;">HABIT</div>
+            <div style="font-size:9px;color:#f0f0f0;margin-bottom:4px;">Back Squat</div>
+            <div class="phone-muted" style="font-size:8px;line-height:1.4;color:#aaa;">Same weight. Make every rep feel clean. Leave feeling good.</div>
+          </div>
+        </div>
+      </div>
+      <div class="feature-row-copy">
+        <div class="feature-row-num">08</div>
+        <h3>Same exercises. Different programme.</h3>
+        <p>Your goal shapes how the programme talks to you. Strength gets load targets. Habit gets sustainability. Same squat, different framing.</p>
+        <div class="feature-callout"><strong>Celebrates the progress that matters to you</strong> — not a generic leaderboard.</div>
+      </div>
+    </div>
+
+    <!-- 9. CLOSED LOOP -->
+    <div class="feature-row">
+      <div class="phone-frame">
+        <div class="phone-screen">
+          <div class="phone-label">POST-SESSION</div>
+          <div style="font-size:11px;font-weight:500;margin-bottom:8px;">How did that feel?</div>
+          <div style="display:flex;gap:4px;margin-bottom:10px;">
+            <div class="phone-card" style="flex:1;text-align:center;padding:6px 2px;font-size:9px;">Light</div>
+            <div class="phone-card" style="flex:1;text-align:center;padding:6px 2px;font-size:9px;">Moderate</div>
+            <div class="phone-card phone-card-accent" style="flex:1;text-align:center;padding:6px 2px;font-size:9px;">Hard</div>
+            <div class="phone-card" style="flex:1;text-align:center;padding:6px 2px;font-size:9px;">Max</div>
+          </div>
+          <div style="font-size:11px;font-weight:500;margin-bottom:8px;">Any soreness?</div>
+          <div style="display:flex;gap:4px;margin-bottom:10px;">
+            <div class="phone-card" style="flex:1;text-align:center;padding:6px 2px;font-size:9px;">None</div>
+            <div class="phone-card phone-card-accent" style="flex:1;text-align:center;padding:6px 2px;font-size:9px;">Some</div>
+            <div class="phone-card" style="flex:1;text-align:center;padding:6px 2px;font-size:9px;">A lot</div>
+          </div>
+          <div class="phone-divider"></div>
+          <div class="phone-card" style="border-left:2px solid #c49098;padding:6px 8px;">
+            <div style="font-size:8px;color:#c49098;letter-spacing:1px;margin-bottom:2px;font-weight:500;">NEXT WEEK</div>
+            <div class="phone-muted" style="font-size:9px;line-height:1.4;color:#aaa;">Volume pulled back slightly on lower body. You reported high effort — the programme is responding.</div>
+          </div>
+        </div>
+      </div>
+      <div class="feature-row-copy">
+        <div class="feature-row-num">09</div>
+        <h3>Two taps. No wearable required.</h3>
+        <p>Other apps want you to sync your watch, connect your tracker, and reconcile five dashboards. Kine asks you two questions. Research shows self-reported effort is as accurate as heart-rate data for programming training — without the noise, the second-guessing, or a number disagreeing with how you actually feel.</p>
+        <div class="feature-callout"><strong>Your experience is the signal.</strong> No devices to charge, no conflicting data, no leaderboards. Just you and your coach.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- 6. PRICING + CTA -->
+<section id="cta">
+  <div class="hero-glow"></div>
+  <div class="section-inner">
+    <div class="section-label">06 — Pricing</div>
+    <h2>You already do the hard part.<br><span class="highlight">Kinē does the part nobody taught you.</span></h2>
+    <div class="section-divider"></div>
+
+    <div class="price-card-main">
+      <div class="price-value">£30<span>/mo</span></div>
+      <p class="price-features">Periodised programming. Exercise education. Intelligent swaps. Cycle awareness. Session analysis. Weekly insights. Warmups. Progress tracking. All of it — every session, every week, every block.</p>
+      <div style="color:var(--muted2);font-size:0.85rem;margin-top:0.8rem;">That's <strong style="color:var(--text);">£7.50/week</strong> — less than a lunch for a programme that adapts every session.</div>
+      <div class="price-guarantee">14-day money-back guarantee — train for two weeks, risk-free. Cancel anytime.</div>
+    </div>
+
+    <div class="price-compare">
+      <div class="compare-item">
+        <div class="compare-value">£80–150/mo</div>
+        <div class="compare-label">what an online coach charges for the same programming and weekly adjustments</div>
+      </div>
+      <div class="compare-item">
+        <div class="compare-value">£7.50/week</div>
+        <div class="compare-label">less than a lunch. Every session, every week, every block.</div>
+      </div>
+    </div>
+
+    <div class="cta-line"></div>
+    <a href="https://kinefit.app" class="cta-link">Join the waitlist</a>
+    <p class="cta-footer">Built by a woman who spent ten years getting smarter — then built the thing she wished she'd had from the start.</p>
+  </div>
+</section>
+
+
+<script>
+// ─── SCROLL OBSERVER ───
+const sections = document.querySelectorAll('section');
+const dots = document.querySelectorAll('.nav-dot');
+const navbar = document.getElementById('navbar');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.querySelector('.section-inner')?.classList.add('visible');
+    }
+  });
+}, { threshold: 0.05 });
+
+sections.forEach(s => observer.observe(s));
+
+// ─── NAV DOTS ───
+const sectionObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const idx = Array.from(sections).indexOf(entry.target);
+      dots.forEach(d => d.classList.remove('active'));
+      if (dots[idx]) dots[idx].classList.add('active');
+    }
+  });
+}, { threshold: 0.4 });
+
+sections.forEach(s => sectionObserver.observe(s));
+
+dots.forEach(dot => {
+  dot.addEventListener('click', () => {
+    const idx = parseInt(dot.dataset.section);
+    sections[idx]?.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+
+// ─── NAV SHRINK ───
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 80);
+});
+
+// ─── INITIAL HERO ANIMATION ───
+setTimeout(() => {
+  document.querySelector('#hero .section-inner').classList.add('visible');
+}, 200);
+</script>
+
+</body>
+</html>
