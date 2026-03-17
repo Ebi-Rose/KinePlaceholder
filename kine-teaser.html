@@ -323,6 +323,110 @@
     color: var(--muted);
   }
 
+  /* ─── PHONE MOCKUPS ─── */
+  .mockup-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+
+  .mockup-item {
+    text-align: center;
+  }
+
+  .mockup-item .mockup-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    color: var(--muted);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+  }
+
+  .mockup-item .mockup-caption {
+    font-size: 0.85rem;
+    color: var(--muted2);
+    margin-top: 1rem;
+    font-style: italic;
+  }
+
+  .phone-frame {
+    background: #111111;
+    border-radius: 28px;
+    border: 2px solid #252525;
+    padding: 16px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    position: relative;
+    overflow: hidden;
+    max-width: 280px;
+    margin: 0 auto;
+  }
+
+  .phone-frame::before {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 4px;
+    background: #252525;
+    border-radius: 4px;
+    margin: 0 auto 12px;
+  }
+
+  .phone-screen {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    line-height: 1.4;
+    color: #f0f0f0;
+  }
+
+  .phone-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: #c49098;
+    margin-bottom: 6px;
+  }
+
+  .phone-heading {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: #f0f0f0;
+    margin-bottom: 8px;
+    line-height: 1.25;
+  }
+
+  .phone-heading em { color: #c49098; font-style: normal; font-weight: 500; }
+
+  .phone-muted { color: #888; font-weight: 300; font-size: 10px; }
+
+  .phone-card {
+    background: #191919;
+    border: 1px solid #252525;
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-bottom: 6px;
+  }
+
+  .phone-card-accent {
+    border-color: rgba(196,144,152,0.4);
+  }
+
+  .phone-divider {
+    height: 1px;
+    background: #252525;
+    margin: 8px 0;
+  }
+
+  @media (max-width: 900px) {
+    .mockup-row {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+    .phone-frame { max-width: 280px; }
+  }
+
   /* ─── STEP CARDS ─── */
   .steps-grid {
     display: grid;
@@ -519,10 +623,139 @@
   </div>
 </section>
 
+<!-- 3B. YOUR JOURNEY — simplified mockups -->
+<section style="min-height:auto; padding-bottom:2rem;">
+  <div class="section-inner">
+    <div class="section-label">03 — Your Journey</div>
+    <h2>What actually happens<br>when you <span class="highlight">open the app.</span></h2>
+    <div class="section-divider"></div>
+    <p style="margin-bottom:1rem;">No tutorial. No 20-screen setup. A few questions — and your programme is ready.</p>
+
+    <div class="mockup-row">
+
+      <!-- MOCKUP 1: Onboarding -->
+      <div class="mockup-item">
+        <div class="mockup-label">Step 1 — About You</div>
+        <div class="phone-frame">
+          <div class="phone-screen">
+            <div class="phone-label">STEP 1 OF 4</div>
+            <div class="phone-heading">What matters most to you <em>right now?</em></div>
+            <div class="phone-muted" style="margin-bottom:10px;">No wrong answer — this shapes the emphasis of your programme.</div>
+            <div class="phone-card phone-card-accent" style="display:flex;gap:10px;align-items:center;">
+              <div style="font-size:18px;">&#9883;</div>
+              <div>
+                <div style="font-size:12px;font-weight:500;">I want to change how I look</div>
+                <div class="phone-muted">Strength, shape, how you carry yourself.</div>
+              </div>
+            </div>
+            <div class="phone-card" style="display:flex;gap:10px;align-items:center;">
+              <div style="font-size:18px;">&#9878;</div>
+              <div>
+                <div style="font-size:12px;font-weight:500;">I want to get strong</div>
+                <div class="phone-muted">The bar gets heavier. That's the measure.</div>
+              </div>
+            </div>
+            <div class="phone-card" style="display:flex;gap:10px;align-items:center;">
+              <div style="font-size:18px;">&#8635;</div>
+              <div>
+                <div style="font-size:12px;font-weight:500;">I want to build a routine that sticks</div>
+                <div class="phone-muted">Consistency over intensity.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mockup-caption">Your goal shapes the entire programme.</div>
+      </div>
+
+      <!-- MOCKUP 2: Week View -->
+      <div class="mockup-item">
+        <div class="mockup-label">Step 2 — Your Week</div>
+        <div class="phone-frame">
+          <div class="phone-screen">
+            <div class="phone-label">WEEK 1</div>
+            <div class="phone-heading">Hello, Sarah.</div>
+            <div class="phone-muted" style="margin-bottom:10px;">Every session built around you. Tap a day to start.</div>
+            <div class="phone-card phone-card-accent">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <div>
+                  <span style="font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:1px;color:#c49098;">MON</span>
+                  <span style="font-size:11px;font-weight:500;margin-left:6px;">Lower Body — Glute Focus</span>
+                </div>
+                <span class="phone-muted">50 min</span>
+              </div>
+            </div>
+            <div class="phone-card" style="opacity:0.5;">
+              <span style="font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:1px;color:#5a5a5a;">TUE</span>
+              <span style="font-size:11px;color:#5a5a5a;margin-left:6px;">Recovery</span>
+            </div>
+            <div class="phone-card">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <div>
+                  <span style="font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:1px;color:#c49098;">WED</span>
+                  <span style="font-size:11px;font-weight:500;margin-left:6px;">Upper Body — Push &amp; Pull</span>
+                </div>
+                <span class="phone-muted">55 min</span>
+              </div>
+            </div>
+            <div class="phone-card" style="opacity:0.5;">
+              <span style="font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:1px;color:#5a5a5a;">THU</span>
+              <span style="font-size:11px;color:#5a5a5a;margin-left:6px;">Recovery</span>
+            </div>
+            <div class="phone-card">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <div>
+                  <span style="font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:1px;color:#c49098;">FRI</span>
+                  <span style="font-size:11px;font-weight:500;margin-left:6px;">Full Body — Strength</span>
+                </div>
+                <span class="phone-muted">50 min</span>
+              </div>
+            </div>
+            <div class="phone-divider"></div>
+            <div class="phone-muted" style="font-style:italic;line-height:1.5;">
+              "Lower body leads the week — posterior chain is the priority."
+            </div>
+          </div>
+        </div>
+        <div class="mockup-caption">Not a template. A periodised week built for you.</div>
+      </div>
+
+      <!-- MOCKUP 3: Post-Session -->
+      <div class="mockup-item">
+        <div class="mockup-label">Step 3 — After Your Session</div>
+        <div class="phone-frame">
+          <div class="phone-screen">
+            <div class="phone-label">POST-SESSION</div>
+            <div style="font-size:11px;font-weight:500;margin-bottom:8px;">How did that feel?</div>
+            <div style="display:flex;gap:4px;margin-bottom:10px;">
+              <div class="phone-card" style="flex:1;text-align:center;padding:6px 2px;font-size:9px;">Light</div>
+              <div class="phone-card" style="flex:1;text-align:center;padding:6px 2px;font-size:9px;">Moderate</div>
+              <div class="phone-card phone-card-accent" style="flex:1;text-align:center;padding:6px 2px;font-size:9px;">Hard</div>
+              <div class="phone-card" style="flex:1;text-align:center;padding:6px 2px;font-size:9px;">Max</div>
+            </div>
+            <div style="font-size:11px;font-weight:500;margin-bottom:8px;">Any soreness?</div>
+            <div style="display:flex;gap:4px;margin-bottom:10px;">
+              <div class="phone-card" style="flex:1;text-align:center;padding:6px 2px;font-size:9px;">None</div>
+              <div class="phone-card phone-card-accent" style="flex:1;text-align:center;padding:6px 2px;font-size:9px;">Some</div>
+              <div class="phone-card" style="flex:1;text-align:center;padding:6px 2px;font-size:9px;">A lot</div>
+            </div>
+            <div class="phone-divider"></div>
+            <div class="phone-card" style="border-left:2px solid #c49098;padding:6px 8px;">
+              <div style="font-size:8px;color:#c49098;letter-spacing:1px;margin-bottom:2px;font-weight:500;">NEXT WEEK</div>
+              <div class="phone-muted" style="font-size:9px;line-height:1.4;color:#aaa;">Volume adjusted. The programme is responding to how you felt.</div>
+            </div>
+          </div>
+        </div>
+        <div class="mockup-caption">Two taps. No wearable required.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <!-- 4. IT GROWS WITH YOU -->
 <section>
   <div class="section-inner">
-    <div class="section-label">03 — It Grows With You</div>
+    <div class="section-label">04 — It Grows With You</div>
     <h2>It starts by teaching you.<br>It stays by <span class="highlight">challenging you.</span></h2>
     <div class="section-divider"></div>
     <p>You get smarter. So does the programme. The education evolves — from explaining to pushing.</p>
@@ -564,7 +797,7 @@
 <!-- 5. WHAT YOU GET — compact grid, no mockups -->
 <section>
   <div class="section-inner">
-    <div class="section-label">04 — What You Get</div>
+    <div class="section-label">05 — What You Get</div>
     <h2>Everything a coach gives you.<br><span class="highlight">Built into the programme.</span></h2>
     <div class="section-divider"></div>
 
