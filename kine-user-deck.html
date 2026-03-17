@@ -817,7 +817,27 @@
 <body>
 
 <!-- PASSWORD GATE -->
-<div id="pw-gate" style="position:fixed;inset:0;z-index:9999;background:#0E0C0E;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;font-family:'DM Sans',sans-serif;">
+<style>
+  body.locked { overflow: hidden; }
+  body.locked > *:not(#pw-gate):not(script):not(style) { display: none !important; }
+  #pw-gate {
+    position: fixed; inset: 0; z-index: 9999;
+    background: #0E0C0E;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 20px;
+    font-family: 'DM Sans', sans-serif;
+  }
+  #pw-gate.hidden { display: none !important; }
+</style>
+<script>
+// Gate check runs immediately, before any content renders
+(function() {
+  var KEY = 'kine-deck-v2';
+  if (sessionStorage.getItem(KEY) === 'ok') return;
+  document.body.classList.add('locked');
+})();
+</script>
+<div id="pw-gate">
   <div style="font-family:'Bebas Neue',sans-serif;font-size:3rem;letter-spacing:8px;color:#e8e0e2;"><span style="color:#C49098;">K</span>INE</div>
   <p style="color:#6a5a60;font-size:0.9rem;letter-spacing:1px;">This deck is password protected</p>
   <form id="pw-form" style="display:flex;gap:0;border-radius:10px;overflow:hidden;border:1px solid #2a2228;background:#161216;">
@@ -828,23 +848,34 @@
 </div>
 <script>
 (function() {
-  var HASH = '94ccc5870f84db98b277e2b293a4ccff39a090820ea8395069a63100e7e2202f'; // sha256 of password
+  var HASH = '94ccc5870f84db98b277e2b293a4ccff39a090820ea8395069a63100e7e2202f';
+  var KEY = 'kine-deck-v2';
+
   function sha256(str) {
     var buf = new TextEncoder().encode(str);
     return crypto.subtle.digest('SHA-256', buf).then(function(h) {
       return Array.from(new Uint8Array(h)).map(function(b){return b.toString(16).padStart(2,'0')}).join('');
     });
   }
-  if (sessionStorage.getItem('kine-deck-auth') === 'true') {
-    document.getElementById('pw-gate').style.display = 'none';
+
+  // Already authenticated this session
+  if (sessionStorage.getItem(KEY) === 'ok') {
+    document.getElementById('pw-gate').classList.add('hidden');
+    document.body.classList.remove('locked');
+    return;
   }
+
+  // Lock the page
+  document.body.classList.add('locked');
+
   document.getElementById('pw-form').addEventListener('submit', function(e) {
     e.preventDefault();
     var val = document.getElementById('pw-input').value;
     sha256(val).then(function(h) {
       if (h === HASH) {
-        sessionStorage.setItem('kine-deck-auth', 'true');
-        document.getElementById('pw-gate').style.display = 'none';
+        sessionStorage.setItem(KEY, 'ok');
+        document.getElementById('pw-gate').classList.add('hidden');
+        document.body.classList.remove('locked');
       } else {
         document.getElementById('pw-error').style.opacity = '1';
         document.getElementById('pw-input').value = '';
