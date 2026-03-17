@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kinē — The programme nobody else will write you</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0E0C0E;
+    --surface: #161216;
+    --surface2: #1e1a1e;
+    --border: #2a2228;
+    --accent: #C49098;
+    --accent-dim: rgba(196, 144, 152, 0.10);
+    --accent-glow: rgba(196, 144, 152, 0.20);
+    --text: #e8e0e2;
+    --muted: #6a5a60;
+    --muted2: #9a8a90;
+    --radius: 10px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html {
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent) var(--bg);
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 1.2rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    backdrop-filter: blur(20px);
+    background: rgba(14, 12, 14, 0.7);
+    border-bottom: 1px solid var(--border);
+    transition: all 0.4s ease;
+  }
+
+  nav.scrolled {
+    padding: 0.8rem 3rem;
+    background: rgba(14, 12, 14, 0.92);
+  }
+
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    color: var(--text);
+    letter-spacing: 4px;
+  }
+
+  .nav-logo span { color: var(--accent); }
+
+  /* ─── SECTIONS ─── */
+  section {
+    min-height: 100vh;
+    padding: 8rem 3rem 5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .section-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 100%;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .section-inner.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .section-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 28px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.4rem, 5vw, 3.8rem);
+    line-height: 1.05;
+    letter-spacing: 2px;
+    margin-bottom: 1.5rem;
+  }
+
+  h3 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--muted2);
+    max-width: 680px;
+    font-weight: 300;
+  }
+
+  .highlight { color: var(--accent); font-weight: 500; }
+
+  .section-divider {
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    margin-bottom: 2rem;
+  }
+
+  /* ─── HERO ─── */
+  #hero {
+    text-align: center;
+    align-items: center;
+  }
+
+  #hero .section-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(5rem, 12vw, 9rem);
+    letter-spacing: 12px;
+    line-height: 1;
+    color: var(--text);
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-logo .logo-accent { color: var(--accent); }
+
+  .hero-sub {
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(1.1rem, 2.2vw, 1.5rem);
+    color: var(--muted2);
+    margin-bottom: 2.5rem;
+    font-weight: 300;
+    letter-spacing: 0.02em;
+  }
+
+  .hero-tagline {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0.7rem 1.8rem;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    background: var(--surface);
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(196, 144, 152, 0.06) 0%, transparent 60%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    animation: pulse 6s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.4; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 0.7; transform: translate(-50%, -50%) scale(1.15); }
+  }
+
+  /* ─── PAIN POINTS ─── */
+  .pain-point {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.2rem;
+    padding: 1.2rem 0;
+  }
+
+  .pain-dot {
+    width: 10px;
+    height: 10px;
+    min-width: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    margin-top: 0.55rem;
+  }
+
+  .pain-point p {
+    font-size: 1.15rem;
+    max-width: none;
+  }
+
+  .stat-bar {
+    margin-top: 3rem;
+    padding: 2rem 2.5rem;
+    background: var(--surface);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+
+  .stat-bar p {
+    font-size: 1rem;
+    font-style: italic;
+    max-width: none;
+    flex: 1;
+  }
+
+  .stat-bar-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3.5rem;
+    color: var(--accent);
+    line-height: 1;
+    min-width: 100px;
+    text-align: right;
+  }
+
+  /* ─── OUTCOME BARS ─── */
+  .outcome {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 1.2rem 0;
+  }
+
+  .outcome-bar {
+    width: 4px;
+    min-width: 4px;
+    height: 50px;
+    background: var(--accent);
+    border-radius: 2px;
+    margin-top: 0.2rem;
+  }
+
+  .outcome p {
+    font-size: 1.15rem;
+    color: var(--text);
+    max-width: none;
+  }
+
+  /* ─── FEATURE GRID ─── */
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+  }
+
+  .feature-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .feature-card:hover {
+    border-color: rgba(196, 144, 152, 0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+  }
+
+  .feature-accent {
+    width: 32px;
+    height: 3px;
+    background: var(--accent);
+    border-radius: 2px;
+    margin-bottom: 1.2rem;
+  }
+
+  .feature-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .feature-card p {
+    font-size: 0.95rem;
+    color: var(--muted);
+  }
+
+  /* ─── STEP CARDS ─── */
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+  }
+
+  .step-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 16px;
+    padding: 2.5rem 2rem;
+    transition: all 0.3s ease;
+  }
+
+  .step-card:hover {
+    border-color: rgba(196, 144, 152, 0.3);
+    border-left-color: var(--accent);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+  }
+
+  .step-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.8rem;
+    color: rgba(196, 144, 152, 0.2);
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+
+  .step-card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .step-card p {
+    font-size: 0.95rem;
+    color: var(--muted2);
+  }
+
+  /* ─── CTA ─── */
+  #cta {
+    text-align: center;
+    align-items: center;
+  }
+
+  #cta .section-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .cta-line {
+    width: 80px;
+    height: 2px;
+    background: var(--accent);
+    margin: 2rem 0;
+  }
+
+  .cta-link {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.2rem;
+    color: var(--text);
+    text-decoration: none;
+    padding: 0.9rem 2.5rem;
+    border: 1px solid var(--accent);
+    border-radius: 100px;
+    transition: all 0.3s ease;
+    display: inline-block;
+    letter-spacing: 0.02em;
+  }
+
+  .cta-link:hover {
+    background: var(--accent);
+    color: var(--bg);
+  }
+
+  .cta-footer {
+    margin-top: 3rem;
+    font-size: 0.85rem;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  /* ─── CITATIONS ─── */
+  .section-sources {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .section-sources p {
+    font-size: 0.7rem;
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: none;
+    font-style: italic;
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 768px) {
+    section { padding: 6rem 1.5rem 4rem; }
+    nav { padding: 1rem 1.5rem; }
+    .steps-grid { grid-template-columns: 1fr !important; }
+    .feature-grid { grid-template-columns: 1fr; }
+    .stat-bar { flex-direction: column; text-align: center; }
+    .stat-bar-number { text-align: center; min-width: auto; }
+  }
+
+  @media (max-width: 480px) {
+    .hero-logo { letter-spacing: 6px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-logo"><span>K</span>INE</div>
+</nav>
+
+<!-- 1. HERO -->
+<section id="hero">
+  <div class="hero-glow"></div>
+  <div class="section-inner">
+    <h1 class="hero-logo">KIN<span class="logo-accent">E</span></h1>
+    <p class="hero-sub">The gym was never the hard part.<br>It was everything nobody told you when you got there.</p>
+    <div class="hero-tagline">An intelligent training programme for women — it explains itself, then gets out of your way</div>
+  </div>
+</section>
+
+<!-- 2. THE PROBLEM -->
+<section>
+  <div class="section-inner">
+    <div class="section-label">01 — Sound Familiar?</div>
+    <h2>You show up every week.<br>So why does nobody build <span class="highlight">for you?</span></h2>
+    <div class="section-divider"></div>
+
+    <div class="pain-point">
+      <div class="pain-dot"></div>
+      <p>The options don't fit. Programmes built for men, beginner content you outgrow in weeks, or a sport that's more than most people are looking for. <span class="highlight">Hardly any intelligent training built around how women actually want to look, feel and progress.</span></p>
+    </div>
+    <div class="pain-point">
+      <div class="pain-dot"></div>
+      <p>The "smart" apps weren't the answer either — numbers without explanation, no sense of progress, and the moment life gets in the way, it feels like starting over. <span class="highlight">Women are 60% of fitness app users but stay 20% fewer days than men.</span> The number one thing they want is to be taught — and almost none of them do it.</p>
+    </div>
+    <div class="pain-point">
+      <div class="pain-dot"></div>
+      <p>I built Kine because I lived it. The injuries from programmes that weren't designed with me in mind. The apps I stopped opening. It took powerlifting to show me what real structure felt like — and I realised that shouldn't require committing to a sport. <span class="highlight">That's what Kine was built for.</span></p>
+    </div>
+
+    <div class="stat-bar">
+      <p>of fitness app users leave within the first 90 days. Not from laziness — from apps that don't meet them where they are.</p>
+      <div class="stat-bar-number">69%</div>
+    </div>
+
+    <div class="section-sources">
+      <p>Sources: PureGym/YouGov UK Fitness Report 2022 · Xu et al., PLOS ONE 2024 · JMIR mHealth 2026 · Tong et al., JMIR 2024</p>
+    </div>
+  </div>
+</section>
+
+<!-- 3. WHAT KINE IS -->
+<section>
+  <div class="section-inner">
+    <div class="section-label">02 — What Kine Actually Is</div>
+    <h2>A programme built around you —<br>that <span class="highlight">teaches you</span> as you follow it.</h2>
+    <div class="section-divider"></div>
+    <p>Most apps hand you a workout. Kine builds yours — around your experience, your goals, and your body. Then it explains every decision it made. Every session comes with context — not a textbook, just the right explanation at the right moment. After a few weeks, you stop Googling. After a few months, you don't need the explanation at all.</p>
+
+    <div class="outcome">
+      <div class="outcome-bar"></div>
+      <p><strong>"Squats lead your session because they're the most demanding movement — everything after is built around the fatigue they create."</strong><br><em style="color:var(--muted2);">You didn't read that in an article. It appeared before your first set.</em></p>
+    </div>
+    <div class="outcome">
+      <div class="outcome-bar"></div>
+      <p><strong>"This is week 4. Your body catches up to the work you've been putting in. That's what a deload is — and it's why you'll come back stronger next week."</strong><br><em style="color:var(--muted2);">You learned what a deload is by doing one.</em></p>
+    </div>
+    <div class="outcome">
+      <div class="outcome-bar"></div>
+      <p><strong>"Your weight hasn't moved in two weeks. That's consolidation — the jump comes after the plateau, not instead of it."</strong><br><em style="color:var(--muted2);">The moment most apps go silent, Kine explains what's actually happening.</em></p>
+    </div>
+
+    <div class="stat-bar">
+      <p>higher retention in apps that educate, not just track. Understanding is what keeps people training.</p>
+      <div class="stat-bar-number">50%</div>
+    </div>
+
+    <div class="section-sources">
+      <p>Sources: Feed.fm Digital Fitness Ecosystem Report 2026</p>
+    </div>
+  </div>
+</section>
+
+<!-- 4. IT GROWS WITH YOU -->
+<section>
+  <div class="section-inner">
+    <div class="section-label">03 — It Grows With You</div>
+    <h2>It starts by teaching you.<br>It stays by <span class="highlight">challenging you.</span></h2>
+    <div class="section-divider"></div>
+    <p>You get smarter. So does the programme. The education evolves — from explaining to pushing.</p>
+
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-number">01</div>
+        <h3>It meets you where you are</h3>
+        <p>Exercise briefs on every movement — expandable, not forced. If you know it, skip it. If you don't, it's right there.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-number">02</div>
+        <h3>You start to anticipate</h3>
+        <p>You understand why your session is structured the way it is. You recognise patterns across blocks.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-number">03</div>
+        <h3>You own it</h3>
+        <p>You're not just following — you're reading your own training. Kine moves from explaining to challenging your understanding.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-number">04</div>
+        <h3>Go deeper</h3>
+        <p>Exercise deep dives. Muscle group breakdowns. The education that would have overwhelmed you early on — now it's yours.</p>
+      </div>
+    </div>
+
+    <div class="stat-bar">
+      <p>Self-efficacy — not motivation — is the strongest predictor of whether someone keeps training long-term. Kine builds that.</p>
+      <div class="stat-bar-number" style="font-size:2rem;">Self-efficacy</div>
+    </div>
+
+    <div class="section-sources">
+      <p>Sources: Slovinec D'Angelo et al., Health Psychology 2014 · McAuley, Journal of Behavioral Medicine 1992</p>
+    </div>
+  </div>
+</section>
+
+<!-- 5. WHAT YOU GET — compact grid, no mockups -->
+<section>
+  <div class="section-inner">
+    <div class="section-label">04 — What You Get</div>
+    <h2>Everything a coach gives you.<br><span class="highlight">Built into the programme.</span></h2>
+    <div class="section-divider"></div>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-accent"></div>
+        <h3>Periodised programming</h3>
+        <p>Structured blocks that build on each other. Load, volume, and intensity managed across weeks — not random workouts.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-accent"></div>
+        <h3>Exercise education</h3>
+        <p>Every movement comes with context — what it targets, how to do it, and why it's in your session today.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-accent"></div>
+        <h3>Intelligent swaps</h3>
+        <p>Can't do a movement? Swap it — and the programme explains what you're trading off so you're making an informed choice.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-accent"></div>
+        <h3>Cycle awareness</h3>
+        <p>Optional period tracking built in. Another layer of context — not a rulebook. Works with your body, not against it.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-accent"></div>
+        <h3>Session analysis</h3>
+        <p>After every session, feedback that sounds like a coach — what went well, what to watch, what comes next.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-accent"></div>
+        <h3>Weekly insights</h3>
+        <p>A full summary after your last session. Total volume. Progressions. PRs. And a plain-English analysis of your week.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-accent"></div>
+        <h3>Programmed warmups</h3>
+        <p>Targeted to your session. The warmup most people skip — because nobody programmes it for them.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-accent"></div>
+        <h3>Progress tracking</h3>
+        <p>Progress measured by capability, not compliance. Miss a week? A welcome-back card shows everything you've built.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-accent"></div>
+        <h3>Two taps. No wearable.</h3>
+        <p>No watches. No syncing. No five dashboards. Two questions after your session — your experience is the signal.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. CTA — no pricing -->
+<section id="cta">
+  <div class="hero-glow"></div>
+  <div class="section-inner">
+    <h2>You already do the hard part.<br><span class="highlight">Kine does the part nobody taught you.</span></h2>
+    <div class="cta-line"></div>
+    <a href="https://kinefit.app" class="cta-link">Join the waitlist</a>
+    <p class="cta-footer">Built by a woman who spent ten years getting smarter — then built the thing she wished she'd had from the start.</p>
+  </div>
+</section>
+
+<script>
+// ─── SCROLL OBSERVER ───
+const sections = document.querySelectorAll('section');
+const navbar = document.getElementById('navbar');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.querySelector('.section-inner')?.classList.add('visible');
+    }
+  });
+}, { threshold: 0.05 });
+
+sections.forEach(s => observer.observe(s));
+
+// ─── NAV SCROLL ───
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 50);
+});
+
+// ─── INITIAL HERO ANIMATION ───
+setTimeout(() => {
+  document.querySelector('#hero .section-inner').classList.add('visible');
+}, 200);
+</script>
+
+</body>
+</html>
