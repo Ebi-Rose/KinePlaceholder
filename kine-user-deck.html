@@ -816,6 +816,45 @@
 </head>
 <body>
 
+<!-- PASSWORD GATE -->
+<div id="pw-gate" style="position:fixed;inset:0;z-index:9999;background:#0E0C0E;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;font-family:'DM Sans',sans-serif;">
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:3rem;letter-spacing:8px;color:#e8e0e2;"><span style="color:#C49098;">K</span>INE</div>
+  <p style="color:#6a5a60;font-size:0.9rem;letter-spacing:1px;">This deck is password protected</p>
+  <form id="pw-form" style="display:flex;gap:0;border-radius:10px;overflow:hidden;border:1px solid #2a2228;background:#161216;">
+    <input id="pw-input" type="password" placeholder="Enter password" autocomplete="off" style="padding:14px 18px;background:transparent;border:none;color:#e8e0e2;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:300;outline:none;width:220px;">
+    <button type="submit" style="padding:14px 24px;background:#C49098;border:none;color:#0E0C0E;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;letter-spacing:0.5px;white-space:nowrap;">Enter</button>
+  </form>
+  <p id="pw-error" style="color:#c49098;font-size:0.8rem;opacity:0;transition:opacity 0.3s;">Incorrect password</p>
+</div>
+<script>
+(function() {
+  var HASH = '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8'; // sha256 of password
+  function sha256(str) {
+    var buf = new TextEncoder().encode(str);
+    return crypto.subtle.digest('SHA-256', buf).then(function(h) {
+      return Array.from(new Uint8Array(h)).map(function(b){return b.toString(16).padStart(2,'0')}).join('');
+    });
+  }
+  if (sessionStorage.getItem('kine-deck-auth') === 'true') {
+    document.getElementById('pw-gate').style.display = 'none';
+  }
+  document.getElementById('pw-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var val = document.getElementById('pw-input').value;
+    sha256(val).then(function(h) {
+      if (h === HASH) {
+        sessionStorage.setItem('kine-deck-auth', 'true');
+        document.getElementById('pw-gate').style.display = 'none';
+      } else {
+        document.getElementById('pw-error').style.opacity = '1';
+        document.getElementById('pw-input').value = '';
+        setTimeout(function(){ document.getElementById('pw-error').style.opacity = '0'; }, 2000);
+      }
+    });
+  });
+})();
+</script>
+
 <!-- NAV -->
 <nav id="navbar">
   <div class="nav-logo">KIN<span>Ē</span></div>
