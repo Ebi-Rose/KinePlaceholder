@@ -848,14 +848,16 @@
 </div>
 <script>
 (function() {
-  var HASH = '94ccc5870f84db98b277e2b293a4ccff39a090820ea8395069a63100e7e2202f';
+  // Simple obfuscated check — not crypto-grade, just keeps casual visitors out
+  var PASS = [101,98,105,49,50,51,52,53]; // char codes
   var KEY = 'kine-deck-v2';
 
-  function sha256(str) {
-    var buf = new TextEncoder().encode(str);
-    return crypto.subtle.digest('SHA-256', buf).then(function(h) {
-      return Array.from(new Uint8Array(h)).map(function(b){return b.toString(16).padStart(2,'0')}).join('');
-    });
+  function check(str) {
+    if (str.length !== PASS.length) return false;
+    for (var i = 0; i < PASS.length; i++) {
+      if (str.charCodeAt(i) !== PASS[i]) return false;
+    }
+    return true;
   }
 
   // Already authenticated this session
@@ -871,17 +873,15 @@
   document.getElementById('pw-form').addEventListener('submit', function(e) {
     e.preventDefault();
     var val = document.getElementById('pw-input').value;
-    sha256(val).then(function(h) {
-      if (h === HASH) {
-        sessionStorage.setItem(KEY, 'ok');
-        document.getElementById('pw-gate').classList.add('hidden');
-        document.body.classList.remove('locked');
-      } else {
-        document.getElementById('pw-error').style.opacity = '1';
-        document.getElementById('pw-input').value = '';
-        setTimeout(function(){ document.getElementById('pw-error').style.opacity = '0'; }, 2000);
-      }
-    });
+    if (check(val)) {
+      sessionStorage.setItem(KEY, 'ok');
+      document.getElementById('pw-gate').classList.add('hidden');
+      document.body.classList.remove('locked');
+    } else {
+      document.getElementById('pw-error').style.opacity = '1';
+      document.getElementById('pw-input').value = '';
+      setTimeout(function(){ document.getElementById('pw-error').style.opacity = '0'; }, 2000);
+    }
   });
 })();
 </script>
