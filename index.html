@@ -3,479 +3,619 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0a0a0a">
+<meta name="theme-color" content="#0d0b0c">
 <title>Kinē — The programme nobody else will write you</title>
 <meta name="description" content="Intelligent strength training built around women's bodies. Every decision explained. No wearables, no guesswork — just your coach.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
+:root {
+  --bg: #0d0b0c;
+  --bg-warm: #131011;
+  --rose: #c49098;
+  --rose-light: #d4a5ad;
+  --rose-glow: rgba(196, 144, 152, 0.08);
+  --text: #e8e4e5;
+  --text-dim: #7a7072;
+  --text-faint: #4a4345;
+  --border: #1e1a1b;
+}
+
 body {
-  background: #0a0a0a;
-  color: #f0f0f0;
+  background: var(--bg);
+  color: var(--text);
   font-family: 'DM Sans', sans-serif;
   font-weight: 300;
-  min-height: 100dvh;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
 
-.page {
+/* ── Hero ── */
+.hero {
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 24px 20px;
+  text-align: center;
+  padding: 40px 24px;
   position: relative;
 }
 
-/* Background glow */
-.page::before {
+/* Warm ambient glow */
+.hero::before {
   content: '';
   position: absolute;
-  top: 10%;
-  right: 20%;
-  width: 500px;
-  height: 500px;
-  background: radial-gradient(circle, rgba(196, 144, 152, 0.06) 0%, transparent 70%);
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, var(--rose-glow) 0%, transparent 70%);
   pointer-events: none;
 }
 
-.page::after {
-  content: '';
-  position: absolute;
-  bottom: 10%;
-  left: 15%;
-  width: 400px;
-  height: 400px;
-  background: radial-gradient(circle, rgba(196, 144, 152, 0.04) 0%, transparent 70%);
-  pointer-events: none;
+.brand {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px;
+  letter-spacing: 8px;
+  color: var(--text-dim);
+  margin-bottom: 60px;
+  opacity: 0;
+  animation: fadeIn 1s ease 0.2s forwards;
 }
 
-.layout {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 60px;
-  max-width: 1000px;
-  width: 100%;
-  animation: fadeUp 0.8s ease-out;
+.brand span { color: var(--rose); }
+
+.headline {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(36px, 6vw, 64px);
+  font-weight: 400;
+  line-height: 1.2;
+  max-width: 600px;
+  letter-spacing: -0.5px;
+  color: var(--text);
+  opacity: 0;
+  animation: fadeUp 0.9s ease 0.4s forwards;
 }
 
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+.headline em {
+  font-style: italic;
+  color: var(--rose);
 }
 
-/* Left content */
-.content {
-  flex: 1;
-  max-width: 440px;
+.subline {
+  font-size: clamp(15px, 2vw, 17px);
+  line-height: 1.8;
+  color: var(--text-dim);
+  max-width: 400px;
+  margin-top: 24px;
+  opacity: 0;
+  animation: fadeUp 0.9s ease 0.7s forwards;
+}
+
+/* CTA area */
+.cta-group {
+  margin-top: 48px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
-}
-
-.logo {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 72px;
-  letter-spacing: 8px;
-  line-height: 1;
-}
-
-.logo .k { color: #c49098; }
-.logo .rest { color: #f0f0f0; }
-
-.tagline {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 16px;
-  letter-spacing: 5px;
-  color: #555;
-}
-
-.description {
-  font-size: 17px;
-  line-height: 1.8;
-  color: #999;
-}
-
-.description em {
-  color: #c49098;
-  font-style: italic;
-}
-
-/* Feature pills */
-.pills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 0;
-}
-
-.pill {
-  display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 14px;
-  background: #141414;
-  border: 1px solid #222;
-  border-radius: 100px;
-  font-size: 12px;
-  color: #aaa;
-  letter-spacing: 0.3px;
+  gap: 20px;
+  opacity: 0;
+  animation: fadeUp 0.9s ease 1s forwards;
 }
 
-.pill svg {
-  width: 14px;
-  height: 14px;
-  stroke: #c49098;
+.cta-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 32px;
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  color: var(--text);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  background: transparent;
+}
+
+.cta-link:hover {
+  border-color: var(--rose);
+  color: var(--rose);
+  box-shadow: 0 0 30px var(--rose-glow);
+}
+
+.cta-link svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
   fill: none;
   stroke-width: 2;
+  transition: transform 0.3s ease;
 }
 
-/* Waitlist */
-.waitlist {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 2px;
+.cta-link:hover svg {
+  transform: translateX(3px);
 }
 
-.waitlist-label {
+.or-join {
   font-size: 11px;
   letter-spacing: 3px;
   text-transform: uppercase;
-  color: #444;
+  color: var(--text-faint);
 }
 
-.waitlist-form {
+/* Waitlist — subtle */
+.waitlist-mini {
   display: flex;
-  width: 100%;
-  max-width: 380px;
-  border-radius: 12px;
+  border-radius: 100px;
   overflow: hidden;
-  border: 1px solid #1e1e1e;
-  background: #111;
+  border: 1px solid var(--border);
+  background: var(--bg-warm);
   transition: border-color 0.3s, box-shadow 0.3s;
+  max-width: 340px;
+  width: 100%;
 }
 
-.waitlist-form:focus-within {
-  border-color: rgba(196, 144, 152, 0.4);
-  box-shadow: 0 0 20px rgba(196, 144, 152, 0.06);
+.waitlist-mini:focus-within {
+  border-color: rgba(196, 144, 152, 0.3);
+  box-shadow: 0 0 30px var(--rose-glow);
 }
 
-.waitlist-form input {
+.waitlist-mini input {
   flex: 1;
-  padding: 14px 16px;
+  padding: 12px 20px;
   background: transparent;
   border: none;
-  color: #f0f0f0;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 14px;
-  font-weight: 300;
-  outline: none;
-}
-
-.waitlist-form input::placeholder { color: #444; }
-
-.waitlist-form button {
-  padding: 14px 24px;
-  background: #c49098;
-  border: none;
-  color: #0a0a0a;
+  color: var(--text);
   font-family: 'DM Sans', sans-serif;
   font-size: 13px;
+  font-weight: 300;
+  outline: none;
+  min-width: 0;
+}
+
+.waitlist-mini input::placeholder { color: var(--text-faint); }
+
+.waitlist-mini button {
+  padding: 12px 22px;
+  background: var(--rose);
+  border: none;
+  color: var(--bg);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
   font-weight: 500;
   cursor: pointer;
   transition: background 0.2s;
   white-space: nowrap;
   letter-spacing: 0.5px;
+  border-radius: 0 100px 100px 0;
 }
 
-.waitlist-form button:hover { background: #d4a5ad; }
-.waitlist-form button:active { transform: scale(0.98); }
+.waitlist-mini button:hover { background: var(--rose-light); }
 
 .waitlist-success {
   display: none;
-  font-size: 14px;
-  color: #c49098;
+  font-size: 13px;
+  color: var(--rose);
   letter-spacing: 0.5px;
   animation: fadeUp 0.4s ease-out;
 }
 
-/* Phone mockup */
-.phone-wrapper {
+/* ── Scroll hint ── */
+.scroll-hint {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-faint);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  opacity: 0;
+  animation: fadeIn 1s ease 1.5s forwards;
+}
+
+.scroll-hint .line {
+  width: 1px;
+  height: 24px;
+  background: linear-gradient(to bottom, var(--text-faint), transparent);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.8; }
+}
+
+/* ── Tease section ── */
+.tease {
+  padding: 80px 24px 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 56px;
   position: relative;
-  flex-shrink: 0;
+}
+
+.tease::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1px;
+  height: 80px;
+  background: linear-gradient(to bottom, transparent, var(--border));
+}
+
+/* Three principles */
+.principles {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  max-width: 720px;
+  width: 100%;
+}
+
+.principle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 32px 20px;
+}
+
+.principle-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(196, 144, 152, 0.06);
+  border: 1px solid rgba(196, 144, 152, 0.12);
+}
+
+.principle-icon svg {
+  width: 18px;
+  height: 18px;
+  stroke: var(--rose);
+  fill: none;
+  stroke-width: 1.5;
+}
+
+.principle-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 18px;
+  color: var(--text);
+}
+
+.principle-desc {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text-dim);
+}
+
+/* Phone tease */
+.phone-tease {
+  position: relative;
+  padding: 40px 0;
+}
+
+.phone-tease::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, var(--rose-glow) 0%, transparent 70%);
+  pointer-events: none;
 }
 
 .phone {
-  width: 260px;
-  height: 520px;
-  background: #111;
-  border-radius: 36px;
-  border: 3px solid #222;
+  width: 240px;
+  height: 480px;
+  background: var(--bg-warm);
+  border-radius: 32px;
+  border: 2px solid var(--border);
   overflow: hidden;
   position: relative;
   box-shadow:
-    0 0 0 1px rgba(255,255,255,0.03),
-    0 20px 60px rgba(0,0,0,0.5),
-    0 0 40px rgba(196, 144, 152, 0.05);
+    0 0 0 1px rgba(255,255,255,0.02),
+    0 30px 80px rgba(0,0,0,0.6),
+    0 0 60px var(--rose-glow);
 }
 
-/* Phone notch */
 .phone::before {
   content: '';
   position: absolute;
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 100px;
-  height: 24px;
-  background: #0a0a0a;
-  border-radius: 0 0 16px 16px;
+  width: 80px;
+  height: 22px;
+  background: var(--bg);
+  border-radius: 0 0 14px 14px;
   z-index: 10;
 }
 
-/* Phone screen content */
 .phone-screen {
   width: 100%;
   height: 100%;
-  padding: 40px 20px 20px;
+  padding: 38px 18px 18px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  background: #0a0a0a;
+  gap: 14px;
+  background: var(--bg);
 }
 
 .phone-header {
   text-align: center;
-  padding-bottom: 8px;
+  padding-bottom: 6px;
 }
 
-.phone-header .phone-logo {
+.phone-logo {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 20px;
+  font-size: 16px;
   letter-spacing: 3px;
+  color: var(--text);
 }
 
-.phone-header .phone-logo .pk { color: #c49098; }
-.phone-header .phone-logo .pr { color: #f0f0f0; }
+.phone-logo span { color: var(--rose); }
 
-.phone-greeting {
-  font-size: 13px;
-  color: #888;
+.phone-sub {
+  font-size: 10px;
+  color: var(--text-dim);
   margin-top: 4px;
 }
 
-/* Mock exercise cards */
 .phone-card {
-  background: #141414;
-  border: 1px solid #1e1e1e;
-  border-radius: 12px;
-  padding: 14px;
+  background: var(--bg-warm);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
 .phone-card-title {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 500;
-  color: #e0e0e0;
+  color: var(--text);
   letter-spacing: 0.3px;
 }
 
 .phone-card-sub {
-  font-size: 10px;
-  color: #666;
-}
-
-.phone-card-row {
-  display: flex;
-  gap: 6px;
-  margin-top: 4px;
+  font-size: 9px;
+  color: var(--text-dim);
 }
 
 .phone-tag {
-  padding: 3px 8px;
-  background: rgba(196, 144, 152, 0.1);
-  border-radius: 6px;
-  font-size: 9px;
-  color: #c49098;
+  display: inline-block;
+  padding: 2px 7px;
+  border-radius: 5px;
+  font-size: 8px;
   letter-spacing: 0.3px;
 }
 
-.phone-tag.muted {
-  background: #1a1a1a;
-  color: #666;
+.phone-tag.rose {
+  background: rgba(196, 144, 152, 0.15);
+  color: var(--rose);
 }
 
-/* Progress bar mock */
-.phone-progress {
-  height: 4px;
-  background: #1a1a1a;
+.phone-tag.muted {
+  background: #1a1618;
+  color: var(--text-faint);
+}
+
+.phone-bar {
+  height: 3px;
+  background: #1a1618;
   border-radius: 2px;
   overflow: hidden;
   margin-top: 2px;
 }
 
-.phone-progress-fill {
+.phone-bar-fill {
   height: 100%;
   border-radius: 2px;
-  background: linear-gradient(90deg, #c49098, #d4a5ad);
+  background: linear-gradient(90deg, var(--rose), var(--rose-light));
 }
 
-/* Phone bottom nav */
 .phone-nav {
   margin-top: auto;
   display: flex;
   justify-content: space-around;
-  padding-top: 12px;
-  border-top: 1px solid #1a1a1a;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
 }
 
 .phone-nav-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3px;
-  font-size: 8px;
-  color: #444;
+  gap: 2px;
+  font-size: 7px;
+  color: var(--text-faint);
   letter-spacing: 0.3px;
 }
 
-.phone-nav-item.active { color: #c49098; }
+.phone-nav-item.active { color: var(--rose); }
 
 .phone-nav-item svg {
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   stroke: currentColor;
   fill: none;
   stroke-width: 1.5;
 }
 
-/* Floating glow behind phone */
-.phone-glow {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 300px;
-  height: 400px;
-  background: radial-gradient(circle, rgba(196, 144, 152, 0.08) 0%, transparent 70%);
-  pointer-events: none;
-  z-index: -1;
+.phone-caption {
+  margin-top: 24px;
+  font-size: 13px;
+  color: var(--text-dim);
+  font-style: italic;
 }
 
-/* Footer */
-.footer {
-  position: relative;
+/* ── Closer ── */
+.closer {
+  padding: 60px 24px 80px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.closer-text {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(22px, 4vw, 32px);
+  color: var(--text);
+  max-width: 440px;
+  line-height: 1.4;
+}
+
+.closer-text em {
+  font-style: italic;
+  color: var(--rose);
+}
+
+.closer-links {
   display: flex;
   align-items: center;
-  gap: 16px;
-  margin-top: 6px;
+  gap: 24px;
+  margin-top: 8px;
+}
+
+.closer-links a {
+  font-size: 13px;
+  color: var(--rose);
+  text-decoration: none;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.closer-links a:hover { opacity: 1; }
+
+.closer-links .dim {
+  color: var(--text-faint);
+  font-size: 11px;
+}
+
+/* ── Footer ── */
+.site-footer {
+  padding: 32px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  border-top: 1px solid var(--border);
 }
 
 .socials {
   display: flex;
-  gap: 12px;
+  gap: 10px;
 }
 
 .socials a {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  border: 1px solid #222;
-  color: #555;
+  border: 1px solid var(--border);
+  color: var(--text-faint);
   transition: border-color 0.2s, color 0.2s;
   text-decoration: none;
 }
 
 .socials a:hover {
-  border-color: #c49098;
-  color: #c49098;
+  border-color: var(--rose);
+  color: var(--rose);
 }
 
 .socials svg {
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   fill: currentColor;
 }
 
-.footer-text {
+.copyright {
   font-size: 11px;
-  color: #333;
+  color: var(--text-faint);
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .page {
-    padding: 20px 16px;
+/* ── Animations ── */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .hero {
+    padding: 32px 20px;
   }
 
-  .layout {
-    flex-direction: column;
-    gap: 32px;
-    text-align: center;
-  }
-
-  .content {
-    align-items: center;
-    gap: 10px;
-  }
-
-  .logo {
-    font-size: 56px;
+  .brand {
+    margin-bottom: 40px;
+    font-size: 15px;
     letter-spacing: 6px;
   }
 
-  .tagline {
-    font-size: 13px;
-    letter-spacing: 4px;
+  .headline {
+    font-size: 32px;
   }
 
-  .description {
-    font-size: 15px;
-    line-height: 1.7;
+  .subline {
+    font-size: 14px;
+    margin-top: 20px;
   }
 
-  .pills {
-    justify-content: center;
-    gap: 6px;
+  .cta-group {
+    margin-top: 36px;
   }
 
-  .pill {
-    padding: 6px 10px;
-    font-size: 11px;
-  }
-
-  .pill svg {
-    width: 12px;
-    height: 12px;
-  }
-
-  .waitlist {
-    align-items: center;
+  .principles {
+    grid-template-columns: 1fr;
     gap: 8px;
-    margin-top: 0;
+    max-width: 320px;
   }
 
-  .waitlist-form input {
-    padding: 12px 14px;
-    font-size: 13px;
-  }
-
-  .waitlist-form button {
-    padding: 12px 18px;
-    font-size: 12px;
+  .principle {
+    padding: 24px 16px;
   }
 
   .phone {
@@ -484,7 +624,7 @@ body {
   }
 
   .phone::before {
-    width: 72px;
+    width: 64px;
     height: 18px;
   }
 
@@ -493,183 +633,169 @@ body {
     gap: 10px;
   }
 
-  .phone-card {
-    padding: 10px;
-    gap: 6px;
-  }
-
-  .phone-card-title {
-    font-size: 10px;
-  }
-
-  .phone-card-sub {
-    font-size: 9px;
-  }
-
-  .footer {
+  .closer-links {
     flex-direction: column;
-    gap: 8px;
-    margin-top: 4px;
+    gap: 12px;
   }
 
-  .socials a {
-    width: 32px;
-    height: 32px;
-  }
-
-  .socials svg {
-    width: 14px;
-    height: 14px;
-  }
-}
-
-/* Small phones */
-@media (max-width: 390px) {
-  .page {
-    padding: 16px 12px;
-  }
-
-  .layout {
-    gap: 24px;
-  }
-
-  .content {
-    gap: 8px;
-  }
-
-  .logo {
-    font-size: 48px;
-  }
-
-  .description {
-    font-size: 14px;
-  }
-
-  .phone {
-    width: 180px;
-    height: 360px;
+  .site-footer {
+    flex-direction: column;
+    gap: 12px;
   }
 }
 </style>
 </head>
 <body>
 
-<div class="page">
-  <div class="layout">
-    <div class="content">
-      <div class="logo">
-        <span class="k">K</span><span class="rest">INĒ</span>
+<!-- ── Hero ── -->
+<section class="hero">
+  <div class="brand"><span>K</span>INĒ</div>
+
+  <h1 class="headline">You show up.<br>We'll take it <em>from here.</em></h1>
+
+  <p class="subline">
+    An intelligent training programme for women — built around your body, not against it.
+  </p>
+
+  <div class="cta-group">
+    <a href="kine-teaser.html" class="cta-link">
+      See how it works
+      <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+    <span class="or-join">or join the waitlist</span>
+    <form class="waitlist-mini" onsubmit="return handleSubmit(event)">
+      <input type="email" placeholder="your@email.com" required>
+      <button type="submit">Join</button>
+    </form>
+    <div class="waitlist-success">You're on the list ✓</div>
+  </div>
+
+  <div class="scroll-hint">
+    <div class="line"></div>
+  </div>
+</section>
+
+<!-- ── Tease ── -->
+<section class="tease">
+  <div class="principles reveal">
+    <div class="principle">
+      <div class="principle-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
       </div>
-
-      <div class="tagline">THE PROGRAMME NOBODY ELSE WILL WRITE YOU</div>
-
-      <p class="description">
-        You show up. That was the hard part.
-        Kine is <em>an intelligent training programme for women</em> — it explains itself, adapts to your body, and gets out of your way.
-      </p>
-
-      <div class="pills">
-        <span class="pill">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-          Teaches as You Train
-        </span>
-        <span class="pill">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-          Works With Your Body
-        </span>
-        <span class="pill">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
-          Two Taps. No Wearable.
-        </span>
-      </div>
-
-      <div class="waitlist">
-        <div class="waitlist-label">Join the waitlist</div>
-        <form class="waitlist-form" onsubmit="return handleSubmit(event)">
-          <input type="email" placeholder="your@email.com" required>
-          <button type="submit">Join</button>
-        </form>
-        <div class="waitlist-success">You're on the list. We'll be in touch.</div>
-      </div>
-
-      <div class="footer">
-        <div class="socials">
-          <a href="https://www.instagram.com/_kinefitness" aria-label="Instagram" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-          </a>
-          <a href="https://www.tiktok.com/@kine_app" aria-label="TikTok" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.34-6.34V8.75a8.18 8.18 0 004.76 1.52V6.84a4.84 4.84 0 01-1-.15z"/></svg>
-          </a>
-        </div>
-        <a href="kine-teaser.html" style="color:#c49098;font-size:13px;text-decoration:none;margin-top:12px;opacity:0.6;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">See how it works →</a>
-        <a href="kine-user-deck.html" style="color:#555;font-size:11px;text-decoration:none;opacity:0.4;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='0.4'">Full deck ↗</a>
-        <div class="footer-text">&copy; 2026 Kinē</div>
-      </div>
+      <div class="principle-title">Teaches as you train</div>
+      <div class="principle-desc">Every rep has a reason. You'll understand your programme, not just follow it.</div>
     </div>
-
-    <!-- Phone mockup -->
-    <div class="phone-wrapper">
-      <div class="phone-glow"></div>
-      <div class="phone">
-        <div class="phone-screen">
-          <div class="phone-header">
-            <div class="phone-logo"><span class="pk">K</span><span class="pr">INĒ</span></div>
-            <div class="phone-greeting">Session complete</div>
-          </div>
-
-          <div class="phone-card">
-            <div class="phone-card-title">How did that feel?</div>
-            <div class="phone-card-sub">Rate your effort</div>
-            <div class="phone-card-row" style="gap:4px; flex-wrap:wrap; margin-top:6px;">
-              <span class="phone-tag muted">1</span>
-              <span class="phone-tag muted">2</span>
-              <span class="phone-tag muted">3</span>
-              <span class="phone-tag muted">4</span>
-              <span class="phone-tag muted">5</span>
-              <span class="phone-tag muted">6</span>
-              <span class="phone-tag" style="background:rgba(196,144,152,0.25);">7</span>
-              <span class="phone-tag muted">8</span>
-              <span class="phone-tag muted">9</span>
-            </div>
-          </div>
-
-          <div class="phone-card">
-            <div class="phone-card-title">Any soreness?</div>
-            <div class="phone-card-sub">Just a quick check</div>
-            <div class="phone-card-row" style="margin-top:6px;">
-              <span class="phone-tag">None</span>
-              <span class="phone-tag muted">A little</span>
-              <span class="phone-tag muted">Moderate</span>
-            </div>
-          </div>
-
-          <div class="phone-card" style="border-color: rgba(196,144,152,0.2);">
-            <div class="phone-card-title" style="color:#c49098;">Next Week</div>
-            <div class="phone-card-sub">Load adjusted. Programme responding.</div>
-            <div class="phone-progress"><div class="phone-progress-fill" style="width: 75%"></div></div>
-          </div>
-
-          <div class="phone-nav">
-            <div class="phone-nav-item active">
-              <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-              Home
-            </div>
-            <div class="phone-nav-item">
-              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-              Log
-            </div>
-            <div class="phone-nav-item">
-              <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-              Profile
-            </div>
-          </div>
-        </div>
+    <div class="principle">
+      <div class="principle-icon">
+        <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
       </div>
+      <div class="principle-title">Works with your body</div>
+      <div class="principle-desc">Your cycle, your recovery, your life. The programme listens — and adapts.</div>
+    </div>
+    <div class="principle">
+      <div class="principle-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+      </div>
+      <div class="principle-title">Two taps. No wearable.</div>
+      <div class="principle-desc">Tell us how you feel after each session. That's it. We handle the rest.</div>
     </div>
   </div>
-</div>
+
+  <!-- Phone peek -->
+  <div class="phone-tease reveal">
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="phone-header">
+          <div class="phone-logo"><span>K</span>INĒ</div>
+          <div class="phone-sub">Session complete</div>
+        </div>
+
+        <div class="phone-card">
+          <div class="phone-card-title">How did that feel?</div>
+          <div class="phone-card-sub">Rate your effort</div>
+          <div style="display:flex; gap:3px; flex-wrap:wrap; margin-top:5px;">
+            <span class="phone-tag muted">1</span>
+            <span class="phone-tag muted">2</span>
+            <span class="phone-tag muted">3</span>
+            <span class="phone-tag muted">4</span>
+            <span class="phone-tag muted">5</span>
+            <span class="phone-tag muted">6</span>
+            <span class="phone-tag rose">7</span>
+            <span class="phone-tag muted">8</span>
+            <span class="phone-tag muted">9</span>
+          </div>
+        </div>
+
+        <div class="phone-card">
+          <div class="phone-card-title">Any soreness?</div>
+          <div style="display:flex; gap:4px; margin-top:4px;">
+            <span class="phone-tag rose">None</span>
+            <span class="phone-tag muted">A little</span>
+            <span class="phone-tag muted">Moderate</span>
+          </div>
+        </div>
+
+        <div class="phone-card" style="border-color: rgba(196,144,152,0.15);">
+          <div class="phone-card-title" style="color:var(--rose);">Next week</div>
+          <div class="phone-card-sub">Load adjusted. Programme responding.</div>
+          <div class="phone-bar"><div class="phone-bar-fill" style="width:75%"></div></div>
+        </div>
+
+        <div class="phone-nav">
+          <div class="phone-nav-item active">
+            <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+            Home
+          </div>
+          <div class="phone-nav-item">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Log
+          </div>
+          <div class="phone-nav-item">
+            <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Profile
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="phone-caption">Two taps after every session. That's your only job.</p>
+  </div>
+</section>
+
+<!-- ── Closer ── -->
+<section class="closer reveal">
+  <p class="closer-text">The programme that <em>learns you</em> — so you can stop second-guessing and start training.</p>
+  <div class="closer-links">
+    <a href="kine-teaser.html">See how it works →</a>
+    <a href="kine-user-deck.html" class="dim">Full deck ↗</a>
+  </div>
+</section>
+
+<!-- ── Footer ── -->
+<footer class="site-footer">
+  <div class="socials">
+    <a href="https://www.instagram.com/_kinefitness" aria-label="Instagram" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+    </a>
+    <a href="https://www.tiktok.com/@kine_app" aria-label="TikTok" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.34-6.34V8.75a8.18 8.18 0 004.76 1.52V6.84a4.84 4.84 0 01-1-.15z"/></svg>
+    </a>
+  </div>
+  <span class="copyright">&copy; 2026 Kinē</span>
+</footer>
 
 <script>
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Waitlist
 const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbyQsA4Mi3mSja_dvyNmkGYtr9oi9kac8KLa3Uj-45-Bo5PWGmxu8ZpOZYgoinXFUPDe/exec';
 
 async function handleSubmit(e) {
@@ -691,6 +817,7 @@ async function handleSubmit(e) {
     });
 
     form.style.display = 'none';
+    document.querySelector('.or-join').style.display = 'none';
     success.style.display = 'block';
   } catch (err) {
     button.disabled = false;
