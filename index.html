@@ -33,53 +33,83 @@ body {
   overflow-x: hidden;
 }
 
-/* ── Hero ── */
+/* ── Hero with full background image ── */
 .hero {
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 40px 24px;
+  justify-content: flex-end;
+  padding: 60px 32px 80px;
   position: relative;
+  overflow: hidden;
 }
 
-/* Warm ambient glow */
-.hero::before {
+/* Background image — heavily faded */
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    url('ebi-hero.jpg')
+    center 20% / cover no-repeat;
+  opacity: 0;
+  filter: saturate(0.2);
+  z-index: 0;
+  animation: bgFade 1.5s ease forwards;
+}
+
+@keyframes bgFade {
+  from { opacity: 0; }
+  to { opacity: 0.05; }
+}
+
+/* Dark gradient overlay — heavier at bottom */
+.hero-bg::after {
   content: '';
   position: absolute;
-  top: 30%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, var(--rose-glow) 0%, transparent 70%);
-  pointer-events: none;
+  inset: 0;
+  background:
+    linear-gradient(to bottom,
+      rgba(13, 11, 12, 0.4) 0%,
+      rgba(13, 11, 12, 0.3) 30%,
+      rgba(13, 11, 12, 0.7) 65%,
+      rgba(13, 11, 12, 1) 100%
+    );
 }
 
-.brand {
+.hero-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 800px;
+  gap: 16px;
+}
+
+.logo {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 18px;
-  letter-spacing: 8px;
-  color: var(--text-dim);
-  margin-bottom: 60px;
+  font-size: clamp(80px, 14vw, 140px);
+  letter-spacing: 16px;
+  line-height: 1;
+  margin-bottom: 8px;
   opacity: 0;
-  animation: fadeIn 1s ease 0.2s forwards;
+  animation: fadeIn 0.9s ease 0.3s forwards;
 }
 
-.brand span { color: var(--rose); }
+.logo .k { color: var(--rose); }
+.logo .rest { color: var(--text); }
 
 .headline {
   font-family: 'DM Serif Display', serif;
-  font-size: clamp(36px, 6vw, 64px);
+  font-size: clamp(22px, 3.2vw, 36px);
   font-weight: 400;
   line-height: 1.2;
-  max-width: 600px;
-  letter-spacing: -0.5px;
+  white-space: nowrap;
   color: var(--text);
   opacity: 0;
-  animation: fadeUp 0.9s ease 0.4s forwards;
+  animation: fadeUp 0.9s ease 0.5s forwards;
 }
 
 .headline em {
@@ -88,22 +118,21 @@ body {
 }
 
 .subline {
-  font-size: clamp(15px, 2vw, 17px);
+  font-size: clamp(14px, 2vw, 17px);
   line-height: 1.8;
   color: var(--text-dim);
-  max-width: 400px;
-  margin-top: 24px;
+  max-width: 460px;
   opacity: 0;
   animation: fadeUp 0.9s ease 0.7s forwards;
 }
 
 /* CTA area */
 .cta-group {
-  margin-top: 48px;
+  margin-top: 32px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 16px;
   opacity: 0;
   animation: fadeUp 0.9s ease 1s forwards;
 }
@@ -113,7 +142,7 @@ body {
   align-items: center;
   gap: 8px;
   padding: 14px 32px;
-  border: 1px solid var(--border);
+  border: 1px solid rgba(196, 144, 152, 0.3);
   border-radius: 100px;
   color: var(--text);
   text-decoration: none;
@@ -121,7 +150,8 @@ body {
   font-weight: 400;
   letter-spacing: 0.5px;
   transition: all 0.3s ease;
-  background: transparent;
+  backdrop-filter: blur(10px);
+  background: rgba(13, 11, 12, 0.3);
 }
 
 .cta-link:hover {
@@ -156,7 +186,8 @@ body {
   border-radius: 100px;
   overflow: hidden;
   border: 1px solid var(--border);
-  background: var(--bg-warm);
+  background: rgba(19, 16, 17, 0.8);
+  backdrop-filter: blur(10px);
   transition: border-color 0.3s, box-shadow 0.3s;
   max-width: 340px;
   width: 100%;
@@ -210,9 +241,10 @@ body {
 /* ── Scroll hint ── */
 .scroll-hint {
   position: absolute;
-  bottom: 32px;
+  bottom: 24px;
   left: 50%;
   transform: translateX(-50%);
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -586,26 +618,25 @@ body {
 /* ── Responsive ── */
 @media (max-width: 640px) {
   .hero {
-    padding: 32px 20px;
+    padding: 40px 20px 60px;
   }
 
-  .brand {
-    margin-bottom: 40px;
-    font-size: 15px;
-    letter-spacing: 6px;
+  .logo {
+    font-size: 72px;
+    letter-spacing: 10px;
   }
 
   .headline {
-    font-size: 32px;
+    font-size: 24px;
+    white-space: normal;
   }
 
   .subline {
     font-size: 14px;
-    margin-top: 20px;
   }
 
   .cta-group {
-    margin-top: 36px;
+    margin-top: 28px;
   }
 
   .principles {
@@ -649,25 +680,31 @@ body {
 
 <!-- ── Hero ── -->
 <section class="hero">
-  <div class="brand"><span>K</span>INĒ</div>
+  <div class="hero-bg"></div>
 
-  <h1 class="headline">You show up.<br>We'll take it <em>from here.</em></h1>
+  <div class="hero-content">
+    <div class="logo">
+      <span class="k">K</span><span class="rest">INĒ</span>
+    </div>
 
-  <p class="subline">
-    An intelligent training programme for women — built around your body, not against it.
-  </p>
+    <h1 class="headline">You show up. <em>We'll take it from here.</em></h1>
 
-  <div class="cta-group">
-    <a href="kine-teaser.html" class="cta-link">
-      See how it works
-      <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-    </a>
-    <span class="or-join">or join the waitlist</span>
-    <form class="waitlist-mini" onsubmit="return handleSubmit(event)">
-      <input type="email" placeholder="your@email.com" required>
-      <button type="submit">Join</button>
-    </form>
-    <div class="waitlist-success">You're on the list ✓</div>
+    <p class="subline">
+      An intelligent training programme for women — built around your body, not against it.
+    </p>
+
+    <div class="cta-group">
+      <a href="kine-teaser.html" class="cta-link">
+        What is Kinē?
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <span class="or-join">or join the waitlist</span>
+      <form class="waitlist-mini" onsubmit="return handleSubmit(event)">
+        <input type="email" placeholder="your@email.com" required>
+        <button type="submit">Join</button>
+      </form>
+      <div class="waitlist-success">You're on the list ✓</div>
+    </div>
   </div>
 
   <div class="scroll-hint">
@@ -765,7 +802,7 @@ body {
 <section class="closer reveal">
   <p class="closer-text">The programme that <em>learns you</em> — so you can stop second-guessing and start training.</p>
   <div class="closer-links">
-    <a href="kine-teaser.html">See how it works →</a>
+    <a href="kine-teaser.html">What is Kinē? →</a>
     <a href="kine-user-deck.html" class="dim">Full deck ↗</a>
   </div>
 </section>
