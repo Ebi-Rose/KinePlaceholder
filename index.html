@@ -85,7 +85,7 @@ body {
   align-items: center;
   text-align: center;
   max-width: 800px;
-  gap: 16px;
+  gap: 8px;
 }
 
 .logo {
@@ -93,7 +93,7 @@ body {
   font-size: clamp(80px, 14vw, 140px);
   letter-spacing: 16px;
   line-height: 1;
-  margin-bottom: 8px;
+  margin-bottom: 0;
   opacity: 0;
   animation: fadeIn 0.9s ease 0.3s forwards;
 }
@@ -121,17 +121,18 @@ body {
   line-height: 1.8;
   color: var(--text-dim);
   max-width: 460px;
+  margin-top: 4px;
   opacity: 0;
   animation: fadeUp 0.9s ease 0.7s forwards;
 }
 
 /* CTA area */
 .cta-group {
-  margin-top: 32px;
+  margin-top: 12px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
+  gap: 10px;
   opacity: 0;
   animation: fadeUp 0.9s ease 1s forwards;
 }
@@ -270,12 +271,12 @@ body {
 
 /* ── Tease section ── */
 .tease {
-  padding: 80px 24px 100px;
+  padding: 32px 24px 40px;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 56px;
+  gap: 24px;
   position: relative;
 }
 
@@ -303,8 +304,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
-  padding: 32px 20px;
+  gap: 6px;
+  padding: 12px 12px;
 }
 
 .principle-icon {
@@ -341,7 +342,7 @@ body {
 /* Phone tease */
 .phone-tease {
   position: relative;
-  padding: 40px 0;
+  padding: 8px 0;
 }
 
 .phone-tease::before {
@@ -504,7 +505,7 @@ body {
 
 /* ── Closer ── */
 .closer {
-  padding: 60px 24px 80px;
+  padding: 28px 24px 36px;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -689,7 +690,7 @@ body {
     <h1 class="headline">You show up.<br><em>We'll meet you right there.</em></h1>
 
     <p class="subline">
-      An intelligent training app for women — built around your body, not against it.
+      An intelligent training app for women —<br>built around your body, not against it.
     </p>
 
     <div class="cta-group">
@@ -716,24 +717,24 @@ body {
   <div class="principles reveal">
     <div class="principle">
       <div class="principle-icon">
-        <svg viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
       </div>
-      <div class="principle-title">Teaches as you train</div>
-      <div class="principle-desc">Every rep has a reason. You'll understand your programme, not just follow it.</div>
+      <div class="principle-title">A programme written for you</div>
+      <div class="principle-desc">Not a template. Not a generic plan. Built around your goals, your body, your life.</div>
     </div>
     <div class="principle">
       <div class="principle-icon">
-        <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
       </div>
-      <div class="principle-title">Works with your body</div>
-      <div class="principle-desc">Your cycle, your recovery, your life. The programme listens — and adapts.</div>
+      <div class="principle-title">It tells you why</div>
+      <div class="principle-desc">Every exercise, every set. You stop guessing and start understanding your own training.</div>
     </div>
     <div class="principle">
       <div class="principle-icon">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
       </div>
-      <div class="principle-title">Two taps. No wearable.</div>
-      <div class="principle-desc">Tell us how you feel after each session. That's it. We handle the rest.</div>
+      <div class="principle-title">You won't outgrow it</div>
+      <div class="principle-desc">It adapts as you progress. Week 1 and month 6 feel completely different — because you are.</div>
     </div>
   </div>
 
@@ -793,7 +794,7 @@ body {
         </div>
       </div>
     </div>
-    <p class="phone-caption">Two taps after every session. That's your only job.</p>
+    <p class="phone-caption">It listens. It learns. It adapts — without getting in your way.</p>
   </div>
 </section>
 
